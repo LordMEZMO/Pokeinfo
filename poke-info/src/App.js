@@ -1,5 +1,4 @@
 import './App.css';
-import data from './data/pokemons.json';
 import NavLink from './components/NavLink';
 import PokemonList from './components/PokemonList';
 
@@ -17,15 +16,7 @@ function App() {
       </nav>
       <section>
         <article>
-          {
-           data.results.map((p, k) => {
-              return(
-                <ul>
-                  <PokemonList name={p.name} link={p.url}/>
-                </ul>
-              )
-           }) 
-          }
+          <PokemonList/>
         </article>
       </section>
       <footer>
