@@ -1,0 +1,40 @@
+@import 'bulma/css/bulma.css';
+
+header, nav, footer{
+  background-color: rgba(255, 255, 0, 0.568);
+}
+header{
+  padding: 20px;
+  font-size: 50px;
+  text-align: center;
+}
+nav{
+  border-top: 1px solid black;
+}
+ul{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.navLink{
+  display: inline-flex;
+  padding: 20px 50px;
+}
+article .navLink{
+  border: 0;
+  background-color: rgb(132, 204, 228);
+}
+.navLink > a{
+  text-decoration: none;
+  color: black;
+}
+section{
+  background-color: lightblue;
+  min-height: 100px;
+}
+article{
+  padding: 10px;
+}
+footer{
+  padding: 10px;
+}
