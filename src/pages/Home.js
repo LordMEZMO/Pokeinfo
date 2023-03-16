@@ -1,12 +1,12 @@
 import '../App.css';
-import Navigation from '../components/Layout';
+// import Navigation from '../components/Layout';
 import PokemonList from '../components/PokemonList';
 
 function Home() {
   return (
     <div className="App">
       <header>PokeInfo</header>
-      <Navigation/>
+      {/* <Navigation/> */}
       <section>
         <article>
           <label>Search by name: </label>
