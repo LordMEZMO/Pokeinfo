@@ -38,3 +38,8 @@ article{
 footer{
   padding: 10px;
 }
+
+.card {
+  width: 130px;
+  /* height: 230px; */
+}
