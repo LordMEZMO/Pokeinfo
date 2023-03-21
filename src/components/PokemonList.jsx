@@ -6,7 +6,7 @@ export default function PokemonList() {
 	const [pokeList, setPokeList] = useState([]);
 
 	useEffect(() => {
-        const pokedex = new Pokedex({cacheLimit: 10000000000});
+        const pokedex = new Pokedex();
 		let getPokemons = async () => {
             const data = await pokedex.getPokemonsList()
             setPokeList(data.results)
