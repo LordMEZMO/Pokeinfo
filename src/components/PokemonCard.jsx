@@ -24,7 +24,7 @@ function PokemonCard({ name, link }) {
 					setIsLoading(false)
 				})
 		})
-	}, [])
+	}, [link])
 
 
 	return (
