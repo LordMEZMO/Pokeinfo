@@ -7,11 +7,9 @@ export default function PokemonList() {
 
 	useEffect(() => {
         const pokedex = new Pokedex();
-		let getPokemons = async () => {
-            const data = await pokedex.getPokemonsList()
+        pokedex.getPokemonsList().then((data) => {
             setPokeList(data.results)
-        }
-        getPokemons();
+        })
 	}, []);
 
 	return (
