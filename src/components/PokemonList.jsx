@@ -11,10 +11,11 @@ function Items({currentItems}){
     )
 }
 
-function PaginatedItems({items, itemsPerPage }) {
+function PaginatedItems({items}) {
     // Here we use item offsets; we could also use page offsets
     // following the API or data you're working with.
     const [itemOffset, setItemOffset] = useState(0);
+    const [itemsPerPage, setItemsPerPage] = useState(100);
   
     // Simulate fetching items from another resources.
     // (This could be items from props; or items loaded in a local state
@@ -43,15 +44,23 @@ function PaginatedItems({items, itemsPerPage }) {
               containerClassName='pagination-list'
               nextLinkClassName='pagination-next'
               previousLinkClassName='pagination-previous'
+              activeLinkClassName='is-current'
               breakClassName='pagination-ellipsis'
-            //   activeClassName='pagination-link'
               pageLinkClassName='pagination-link'
               onPageChange={handlePageClick}
               pageRangeDisplayed={5}
+              marginPagesDisplayed={1}
               pageCount={pageCount}
               previousLabel="< previous"
               renderOnZeroPageCount={null}
             />
+            <div className="select">
+              <select onChange={(e)=>setItemsPerPage(parseInt(e.target.value))} defaultValue={itemsPerPage}>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="500">500</option>
+              </select>
+            </div>
         </div>
       </>
     );
@@ -70,6 +79,6 @@ export default function PokemonList() {
 	}, []);
 
 	return (
-        <PaginatedItems itemsPerPage={100} items={pokeList}/>
+        <PaginatedItems items={pokeList}/>
     )
 }
