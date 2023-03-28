@@ -6,12 +6,7 @@ function Home() {
   return (
     <div className="App">
       <header>PokeInfo</header>
-      {/* <Navigation/> */}
       <section>
-        <article>
-          <label>Search by name: </label>
-          <input type="search"/>
-        </article>
         <article>
           <PokemonList/>
         </article>
