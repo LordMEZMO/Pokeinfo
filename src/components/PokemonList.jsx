@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import PokemonCard from './PokemonCard';
 import Pokedex from 'pokedex-promise-v2';
 import ReactPaginate from 'react-paginate';
+import SearchOptions from './SearchOptions';
 
 function Items({ currentItems }) {
   return (
-    <div className='is-flex is-flex-wrap-wrap  is-align-content-space-evenly' style={{ gap: '10px' }}>
+    <div className='is-flex is-flex-wrap-wrap  is-align-content-space-evenly is-justify-content-space-evenly' style={{ gap: '10px' }}>
       {currentItems.map((p, k) => <PokemonCard name={p.name} link={p.url} key={k} />)}
     </div>
   )
@@ -83,7 +84,7 @@ export default function PokemonList() {
     })
   }, []);
 
-  const handleSearch = (e) => {
+  const handleSearchByName = (e) => {
     let text = e.target.value.toLowerCase().trim()
     if(text == null || text == "") {
       setCurrentPokeList(pokeList)
@@ -95,10 +96,7 @@ export default function PokemonList() {
 
   return (
     <>
-      <div className="search control" style={{width: "500px"}}>
-          <label className='label' for='searchBar'>Search by name: </label>
-          <input type="search" className='input' id='searchBar' onChange={handleSearch}/>
-      </div>
+      <SearchOptions handleSearchByName={handleSearchByName}/>
       <PaginatedItems items={currentPokeList} />
     </>
   )

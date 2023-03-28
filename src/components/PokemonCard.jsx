@@ -6,16 +6,19 @@ import LoadingSpinner from './LoadingSpinner';
 
 function PokemonCard({ name, link }) {
 	const capitalize = (text) => text.at(0).toUpperCase() + text.slice(1)
+	const format = (text) => text.replaceAll("-", " ")
 
-	let [types, setTypes] = useState([]);
-	let [sprite, setSprite] = useState()
-	let [isLoading, setIsLoading] = useState(false)
+	const [types, setTypes] = useState([]);
+	const [sprite, setSprite] = useState()
+	const [isLoading, setIsLoading] = useState(false)
+	const [pokemonId, setPokemonId] = useState(0)
 
 	useEffect(() => {
 		const pokedex = new Pokedex();
 		setIsLoading(true)
 		pokedex.getPokemonByName(name).then((data) => {
 			setTypes(data.types)
+			setPokemonId(data.id)
 			fetch(data.sprites.front_default)
 				.then((res) => res.blob())
 				.then((imgBlob) => {
@@ -38,9 +41,10 @@ function PokemonCard({ name, link }) {
 				}
 
 			</div>
-			<div className="card-header">
-				<h5 className="card-header-title">
-					<a href={link}>{capitalize(name)}</a>
+			<div className="card-header is-flex-direction-column">
+				<span className='tag '>#{pokemonId}</span>
+				<h5 className="card-header-title rows">
+					<a href={link} className="">{format(capitalize(name))}</a>
 				</h5>
 			</div>
 			<div className='card-footer are-small'>
