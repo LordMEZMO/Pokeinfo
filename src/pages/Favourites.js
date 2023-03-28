@@ -1,17 +1,13 @@
 import '../App.css';
-import PokemonList from '../components/PokemonList';
 
-function Home() {
+export default function Favourites() {
   return (
     <div className="App">
       <section>
         <article>
-          <PokemonList/>
+            <h1>Favourites</h1>
         </article>
       </section>
     </div>
-
   );
 }
-
-export default Home;
