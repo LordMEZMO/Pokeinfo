@@ -4,15 +4,15 @@ import Pokedex from 'pokedex-promise-v2';
 import ReactPaginate from 'react-paginate';
 import SearchOptions from './SearchOptions';
 
-function Items({ currentItems }) {
+function Items({ currentItems, isShowStats }) {
   return (
     <div className='is-flex is-flex-wrap-wrap  is-align-content-space-evenly is-justify-content-space-evenly' style={{ gap: '10px' }}>
-      {currentItems.map((p, k) => <PokemonCard name={p.name} link={p.url} key={k} />)}
+      {currentItems.map((p, k) => <PokemonCard name={p.name} link={p.url} isShowStats={isShowStats} key={k} />)}
     </div>
   )
 }
 
-function PaginatedItems({ items }) {
+function PaginatedItems({ items, isShowStats }) {
   // Here we use item offsets; we could also use page offsets
   // following the API or data you're working with.
   const [itemOffset, setItemOffset] = useState(0);
@@ -41,7 +41,7 @@ function PaginatedItems({ items }) {
 
   return (
     <>
-      <Items currentItems={currentItems} />
+      <Items currentItems={currentItems} isShowStats={isShowStats} />
       <div className="pagination">
         <ReactPaginate
           breakLabel="..."
@@ -75,6 +75,7 @@ function PaginatedItems({ items }) {
 export default function PokemonList() {
   const [pokeList, setPokeList] = useState([]);
   const [currentPokeList, setCurrentPokeList] = useState([])
+  const [isShowStats, setIsShowStats] = useState(false)
 
   useEffect(() => {
     const pokedex = new Pokedex();
@@ -86,18 +87,21 @@ export default function PokemonList() {
 
   const handleSearchByName = (e) => {
     let text = e.target.value.toLowerCase().trim()
-    if(text == null || text == "") {
+    if(text == null || text === "") {
       setCurrentPokeList(pokeList)
     } else {
       setCurrentPokeList(pokeList.filter((pokemon) => pokemon.name.includes(text)))
     }
   }
 
+  const handleShowStats = (e) => {
+    setIsShowStats(e.target.checked)
+  }
 
   return (
     <>
-      <SearchOptions handleSearchByName={handleSearchByName}/>
-      <PaginatedItems items={currentPokeList} />
+      <SearchOptions handleSearchByName={handleSearchByName} handleShowStats={handleShowStats} />
+      <PaginatedItems items={currentPokeList} isShowStats={isShowStats} />
     </>
   )
 }
