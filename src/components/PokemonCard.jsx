@@ -6,7 +6,7 @@ import LoadingSpinner from './LoadingSpinner';
 
 function PokemonCard({ name, link, isShowStats }) {
 	const capitalize = (text) => text.at(0).toUpperCase() + text.slice(1)
-	const format = (text) => text.replaceAll("-", " ")
+	const format = (text) => text.replaceAll("-", " ").split(' ').map(word => capitalize(word)).join(' ')
 
 	const [types, setTypes] = useState([]);
 	const [sprite, setSprite] = useState()
@@ -21,36 +21,50 @@ function PokemonCard({ name, link, isShowStats }) {
 			setTypes(data.types)
 			setPokemonId(data.id)
 			setStats(data.stats)
-			fetch(data.sprites.front_default)
-				.then((res) => res.blob())
-				.then((imgBlob) => {
-					let imgUrl = URL.createObjectURL(imgBlob)
-					setSprite(imgUrl)
-					setIsLoading(false)
+			if (data.sprites.front_default != null) {
+				fetch(data.sprites.front_default)
+					.then((res) => res.blob())
+					.then((imgBlob) => {
+						let imgUrl = URL.createObjectURL(imgBlob)
+						setSprite(imgUrl)
+						setIsLoading(false)
+					})
+			} else {
+				pokedex.getPokemonSpeciesByName(data.species.name).then((name) => {
+					pokedex.getPokemonByName(name.varieties.find(variety => variety.is_default).pokemon.name).then((data) => {
+						fetch(data.sprites.front_default)
+							.then((res) => res.blob())
+							.then((imgBlob) => {
+								let imgUrl = URL.createObjectURL(imgBlob)
+								setSprite(imgUrl)
+								setIsLoading(false)
+							})
+					})
 				})
+			}
 		})
 	}, [link, name])
 
 
 	return (
-		<div className='card is-flex is-flex-direction-column is-justify-content-space-between'>
+		<div className='card'>
 			<div className="card-image is-flex is-justify-content-center is-align-items-center">
 				{!isLoading ?
 					<figure className="image">
 						<img src={sprite} alt="" />
 					</figure> :
-					<LoadingSpinner/>
+					<LoadingSpinner />
 				}
 
 			</div>
 			<div className="card-header is-flex-direction-column">
 				<span className='tag '>#{pokemonId}</span>
 				<h5 className="card-header-title rows">
-					<a href={link} className="">{format(capitalize(name))}</a>
+					<a href={link} className="">{format(name)}</a>
 				</h5>
 			</div>
 
-			{isShowStats ? 
+			{isShowStats ?
 				<div className='card-content p-2'>
 					<div className="content has-background-light is-size-7 px-2 py-1">
 						{stats.map((x) =>
@@ -60,11 +74,11 @@ function PokemonCard({ name, link, isShowStats }) {
 							</div>
 						)}
 					</div>
-				</div> 
+				</div>
 				: ""
 			}
 
-			<div className='card-footer are-small'>
+			<div className='card-footer are-small' style={{ justifySelf: 'flex-end' }}>
 				{
 					types.map((n, key) => {
 						return <PokemonType type={capitalize(n.type.name)} key={key} />
