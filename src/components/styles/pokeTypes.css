@@ -1,0 +1,83 @@
+/* kolory z https://www.epidemicjohto.com/t882-type-colors-hex-colors */
+
+.pokemon-type[class*="grass"]{
+    background-color: #7AC74C;
+}
+
+.pokemon-type[class*="fire"]{
+    background-color: rgb(255, 62, 62);
+    color: white;
+}
+
+.pokemon-type[class*="water"]{
+    background-color: rgb(173, 173, 255);
+}
+
+.pokemon-type[class*="ground"]{
+    background-color: brown;
+    color: white;
+}
+
+.pokemon-type[class*="normal"]{
+    background-color: #A8A77A;
+}
+
+.pokemon-type[class*="electric"]{
+    background-color: #F7D02C;
+}
+
+.pokemon-type[class*="rock"]{
+    background-color: gray;
+    color: white;
+}
+
+.pokemon-type[class*="fighting"]{
+    background-color: #C22E28;
+    color: white;
+}
+
+.pokemon-type[class*="flying"]{
+    background-color: lightskyblue;
+}
+
+.pokemon-type[class*="poison"]{
+    background-color: purple;
+    color: white;
+}
+
+.pokemon-type[class*="bug"]{
+    background-color: wheat;
+}
+
+.pokemon-type[class*="fairy"]{
+    background-color: #D685AD;
+    color: white;
+}
+
+.pokemon-type[class*="psychic"]{
+    background-color: #F95587;
+    color: white;
+}
+
+.pokemon-type[class*="ice"]{
+    background-color: #DBF1FD;
+}
+
+.pokemon-type[class*="steel"]{
+    background-color: #B7B7CE;
+}
+
+.pokemon-type[class*="dark"]{
+    background-color: #3f3f3f;
+    color: white;
+}
+
+.pokemon-type[class*="ghost"]{
+    background-color: #735797;
+    color: white;
+}
+
+.pokemon-type[class*="dragon"]{
+    background-color: #6F35FC;
+    color: white;
+}
