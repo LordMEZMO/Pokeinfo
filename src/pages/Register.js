@@ -36,7 +36,6 @@ export default function Register() {
       >
         {(formik) => {
           const {errors, touched, isValid, dirty} = formik;
-          console.log(formik)
           return (
             <Form>
               <div className='form-row'>
