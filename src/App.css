@@ -64,3 +64,7 @@ footer{
   border-radius: 50%;
   animation: spinner 1.5s linear infinite;
 }
+
+.card-header {
+  min-height: 100px;
+}
