@@ -64,3 +64,16 @@ footer{
   border-radius: 50%;
   animation: spinner 1.5s linear infinite;
 }
+
+
+.form-row{
+  margin: 10px 0;
+}
+.bad-input{
+  border: 1px solid lightcoral;
+}
+.error-message{
+  margin-left: 10px;
+  text-decoration: underline;
+}
+.disabled-btn{}
