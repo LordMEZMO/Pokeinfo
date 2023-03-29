@@ -5,15 +5,15 @@ import ReactPaginate from 'react-paginate';
 import SearchOptions from './SearchOptions';
 import SortOptions from './SortOptions';
 
-function Items({ currentItems }) {
+function Items({ currentItems, isShowStats }) {
   return (
     <div className='is-flex is-flex-wrap-wrap  is-align-content-space-evenly is-justify-content-space-evenly' style={{ gap: '10px' }}>
-      {currentItems.map((p, k) => <PokemonCard name={p.name} link={p.url} key={k} />)}
+      {currentItems.map((p, k) => <PokemonCard name={p.name} link={p.url} isShowStats={isShowStats} key={k} />)}
     </div>
   )
 }
 
-function PaginatedItems({ items }) {
+function PaginatedItems({ items, isShowStats }) {
   // Here we use item offsets; we could also use page offsets
   // following the API or data you're working with.
   const [itemOffset, setItemOffset] = useState(0);
@@ -42,7 +42,7 @@ function PaginatedItems({ items }) {
 
   return (
     <>
-      <Items currentItems={currentItems} />
+      <Items currentItems={currentItems} isShowStats={isShowStats} />
       <div className="pagination">
         <ReactPaginate
           breakLabel="..."
@@ -76,6 +76,7 @@ function PaginatedItems({ items }) {
 export default function PokemonList() {
   const [pokeList, setPokeList] = useState([]);
   const [currentPokeList, setCurrentPokeList] = useState([])
+  const [isShowStats, setIsShowStats] = useState(false)
 
   useEffect(() => {
     const pokedex = new Pokedex();
@@ -112,12 +113,15 @@ export default function PokemonList() {
     }
   }
 
+  const handleShowStats = (e) => {
+    setIsShowStats(e.target.checked)
+  }
 
   return (
     <>
-      <SearchOptions handleSearchByName={handleSearchByName}/>
+      <SearchOptions handleSearchByName={handleSearchByName} handleShowStats={handleShowStats} />
       <SortOptions handleSort={handleSort}/>
-      <PaginatedItems items={currentPokeList} />
+      <PaginatedItems items={currentPokeList} isShowStats={isShowStats} />
     </>
   )
 }
