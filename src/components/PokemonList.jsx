@@ -3,6 +3,7 @@ import PokemonCard from './PokemonCard';
 import Pokedex from 'pokedex-promise-v2';
 import ReactPaginate from 'react-paginate';
 import SearchOptions from './SearchOptions';
+import SortOptions from './SortOptions';
 
 function Items({ currentItems, isShowStats }) {
   return (
@@ -94,6 +95,24 @@ export default function PokemonList() {
     }
   }
 
+  const handleSort = (e) => {
+    let sortBy = e.target.options[e.target.selectedIndex].value
+    console.log(sortBy)
+
+    switch(sortBy){
+      case "id":
+        break;
+      case "name":
+        break;
+      case "category":
+        break;
+      case "weight":
+        break;
+      case "height":
+        break;
+    }
+  }
+
   const handleShowStats = (e) => {
     setIsShowStats(e.target.checked)
   }
@@ -101,6 +120,7 @@ export default function PokemonList() {
   return (
     <>
       <SearchOptions handleSearchByName={handleSearchByName} handleShowStats={handleShowStats} />
+      <SortOptions handleSort={handleSort}/>
       <PaginatedItems items={currentPokeList} isShowStats={isShowStats} />
     </>
   )
