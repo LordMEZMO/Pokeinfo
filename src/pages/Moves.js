@@ -1,4 +1,5 @@
 import '../App.css';
+import MovesList from '../components/MovesList';
 
 export default function Moves() {
   return (
@@ -6,6 +7,7 @@ export default function Moves() {
       <section>
         <article>
             <h1>Moves</h1>
+            <MovesList/>
         </article>
       </section>
     </div>
