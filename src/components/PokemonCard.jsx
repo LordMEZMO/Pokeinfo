@@ -3,6 +3,7 @@ import PokemonType from './PokemonType'
 import Pokedex from 'pokedex-promise-v2';
 import { useState, useEffect } from 'react';
 import LoadingSpinner from './LoadingSpinner';
+import { Link } from 'react-router-dom';
 
 function PokemonCard({ name, link, isShowStats }) {
 	const capitalize = (text) => {
@@ -64,7 +65,7 @@ function PokemonCard({ name, link, isShowStats }) {
 			<div className="card-header is-flex-direction-column">
 				<span className='tag '>#{pokemonId}</span>
 				<h5 className="card-header-title rows">
-					<a href={link} className="">{format(name)}</a>
+					<Link to={"pokemon/"+format(name).toLowerCase()}>{format(name)}</Link>
 				</h5>
 			</div>
 
