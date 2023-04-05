@@ -1,18 +1,20 @@
 import './App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './pages/Layout';
 import Home from './pages/Home';
-import Favourites from './pages/Favourites'
-import Compare from './pages/Compare'
-import News from './pages/News'
-import Register from './pages/Register'
-import Login from './pages/Login'
+import Favourites from './pages/Favourites';
 import Moves from './pages/Moves';
 import Abilities from './pages/Abilities';
+import Compare from './pages/Compare';
+import News from './pages/News';
+import Register from './pages/Register';
+import Login from './pages/Login';
+import NotFound from './pages/NotFound';
+
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} /> 
@@ -23,8 +25,9 @@ export default function App() {
           <Route path="news" element={<News/>}/>
           <Route path="register" element={<Register/>}/>
           <Route path="login" element={<Login/>}/>
+          <Route path="*" element={<NotFound/>}/>
         </Route>
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 }
