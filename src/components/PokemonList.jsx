@@ -6,15 +6,15 @@ import SearchOptions from './SearchOptions';
 import SortOptions from './SortOptions';
 import PokeAPI from 'pokedex-promise-v2';
 
-function Items({ currentItems, isShowStats, cacheMap }) {
+function Items({ currentItems, isShowStats }) {
   return (
     <div className='is-flex is-flex-wrap-wrap  is-align-content-space-evenly is-justify-content-space-evenly' style={{ gap: '10px' }}>
-      {currentItems.map((p, k) => <PokemonCard name={p.name} link={p.url} isShowStats={isShowStats} cacheMap={cacheMap} key={k} />)}
+      {currentItems.map((p, k) => <PokemonCard name={p.name} link={p.url} isShowStats={isShowStats} key={k} />)}
     </div>
   )
 }
 
-function PaginatedItems({ items, isShowStats, cacheMap }) {
+function PaginatedItems({ items, isShowStats }) {
   // Here we use item offsets; we could also use page offsets
   // following the API or data you're working with.
   const [itemOffset, setItemOffset] = useState(0);
@@ -43,7 +43,7 @@ function PaginatedItems({ items, isShowStats, cacheMap }) {
 
   return (
     <>
-      <Items currentItems={currentItems} isShowStats={isShowStats} cacheMap={cacheMap}/>
+      <Items currentItems={currentItems} isShowStats={isShowStats}/>
       <div className="pagination">
         <ReactPaginate
           breakLabel="..."
@@ -79,7 +79,6 @@ export default function PokemonList() {
   const [currentPokeList, setCurrentPokeList] = useState([])
   const [isShowStats, setIsShowStats] = useState(false)
   const [sortCriteria, setSortCriteria] = useState(null)
-  const pokemonDataCacheMap = new Map()
 
   useEffect(() => {
     const pokedex = new Pokedex();
@@ -144,7 +143,7 @@ export default function PokemonList() {
     <>
       <SearchOptions handleSearchByName={handleSearchByName} handleShowStats={handleShowStats} />
       <SortOptions handleSort={handleSort}/>
-      <PaginatedItems items={currentPokeList} isShowStats={isShowStats} cacheMap={pokemonDataCacheMap} />
+      <PaginatedItems items={currentPokeList} isShowStats={isShowStats} />
     </>
   )
 }
