@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect , useMemo } from 'react';
 import PokemonCard from './PokemonCard';
 import Pokedex from 'pokedex-promise-v2';
 import ReactPaginate from 'react-paginate';
@@ -78,6 +78,7 @@ export default function PokemonList() {
   const [pokeList, setPokeList] = useState([]);
   const [currentPokeList, setCurrentPokeList] = useState([])
   const [isShowStats, setIsShowStats] = useState(false)
+  const [sortCriteria, setSortCriteria] = useState(null)
   const pokemonDataCacheMap = new Map()
 
   useEffect(() => {
@@ -97,22 +98,42 @@ export default function PokemonList() {
     }
   }
 
-  const handleSort = (e) => {
-    let sortBy = e.target.options[e.target.selectedIndex].value
-    console.log(sortBy)
-
-    switch(sortBy){
+  useMemo(() => {
+    console.log(sortCriteria)
+    switch(sortCriteria){
       case "id":
+        // setCurrentPokeList(
+        //   pokeList.sort((a,b) => {
+        //     if (a.id < b.id)
+        //       return -1;
+        //     if (a.id > b.id)
+        //       return 1;
+        //     return 0;
+        //   }))
         break;
       case "name":
+        setCurrentPokeList(
+          pokeList.sort((a,b) => {
+            if (a.name < b.name)
+              return -1;
+            if ( a.name > b.name)
+              return 1;
+            return 0;
+          }))
         break;
       case "category":
+        setCurrentPokeList(pokeList)
         break;
       case "weight":
         break;
       case "height":
         break;
     }
+  }, [sortCriteria])
+
+  const handleSort = (e) => {
+    let sortBy = e.target.options[e.target.selectedIndex].value
+    setSortCriteria(sortBy)
   }
 
   const handleShowStats = (e) => {
