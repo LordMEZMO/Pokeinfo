@@ -4,6 +4,7 @@ import Pokedex from 'pokedex-promise-v2';
 import ReactPaginate from 'react-paginate';
 import SearchOptions from './SearchOptions';
 import SortOptions from './SortOptions';
+import PokeAPI from 'pokedex-promise-v2';
 
 function Items({ currentItems, isShowStats }) {
   return (
@@ -42,7 +43,7 @@ function PaginatedItems({ items, isShowStats }) {
 
   return (
     <>
-      <Items currentItems={currentItems} isShowStats={isShowStats} />
+      <Items currentItems={currentItems} isShowStats={isShowStats}/>
       <div className="pagination">
         <ReactPaginate
           breakLabel="..."
