@@ -17,6 +17,7 @@ export default function PokemonDetails() {
 		const pokedex = new Pokedex();
 		setIsLoading(true)
 		pokedex.getPokemonByName(name).then((data) => {
+			console.log(data)
 			setTypes(data.types)
 			setPokemonId(data.id)
 			setStats(data.stats)
@@ -44,13 +45,19 @@ export default function PokemonDetails() {
 		})
 	}, [name])
 
+	const capitalize = (text) => {
+        if(text.length > 0)
+            return text.at(0).toUpperCase() + text.slice(1)
+        else return ""
+    }
+
     return (
         <div className="App">
             <section>
                 <article>
-                    <h1>Here's all about {name}</h1>
+                    <h1>Here's all about {capitalize(name)}:</h1>
                     <div className="card-image is-flex is-justify-content-center is-align-items-center">
-                        {isLoading ? 
+                        {!isLoading ? 
                             <figure className="image">
                                 <img src={sprite} alt=""/>
                             </figure> :
@@ -58,16 +65,18 @@ export default function PokemonDetails() {
                         }
                     </div>
                     <p>Pokemon id: {pokemonId}</p>
-                    <p>Types: {
-                        types.map((type) => {
-                            <p>{type}</p>
-                        })
-                    }</p>
-                    <p>Stats: {
-                        stats.map((stat) => {
-                            <p>{stat}</p>
-                        })
-                    }</p>
+                    <p>Types:</p>
+					{
+                        types ? types.map((type, k) => (
+							<p key={k}>{type.type.name}</p>
+                        )) : "none"
+                    }
+                    <p>Stats:</p>
+					{
+                        stats ? stats.map((stat) => {
+                            <p>{stat.base_stat}: {stat.stat.name}</p>
+                        }) : "none"
+                    }
                 </article>
             </section>
         </div>
