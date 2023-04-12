@@ -4,16 +4,17 @@ import Pokedex from 'pokedex-promise-v2';
 import ReactPaginate from 'react-paginate';
 import SearchOptions from './SearchOptions';
 import SortOptions from './SortOptions';
+import PokeAPI from 'pokedex-promise-v2';
 
-function Items({ currentItems, isShowStats }) {
+function Items({ currentItems, isShowStats, cacheMap }) {
   return (
     <div className='is-flex is-flex-wrap-wrap  is-align-content-space-evenly is-justify-content-space-evenly' style={{ gap: '10px' }}>
-      {currentItems.map((p, k) => <PokemonCard name={p.name} link={p.url} isShowStats={isShowStats} key={k} />)}
+      {currentItems.map((p, k) => <PokemonCard name={p.name} link={p.url} isShowStats={isShowStats} cacheMap={cacheMap} key={k} />)}
     </div>
   )
 }
 
-function PaginatedItems({ items, isShowStats }) {
+function PaginatedItems({ items, isShowStats, cacheMap }) {
   // Here we use item offsets; we could also use page offsets
   // following the API or data you're working with.
   const [itemOffset, setItemOffset] = useState(0);
@@ -42,7 +43,7 @@ function PaginatedItems({ items, isShowStats }) {
 
   return (
     <>
-      <Items currentItems={currentItems} isShowStats={isShowStats} />
+      <Items currentItems={currentItems} isShowStats={isShowStats} cacheMap={cacheMap}/>
       <div className="pagination">
         <ReactPaginate
           breakLabel="..."
@@ -77,6 +78,7 @@ export default function PokemonList() {
   const [pokeList, setPokeList] = useState([]);
   const [currentPokeList, setCurrentPokeList] = useState([])
   const [isShowStats, setIsShowStats] = useState(false)
+  const pokemonDataCacheMap = new Map()
 
   useEffect(() => {
     const pokedex = new Pokedex();
@@ -121,7 +123,7 @@ export default function PokemonList() {
     <>
       <SearchOptions handleSearchByName={handleSearchByName} handleShowStats={handleShowStats} />
       <SortOptions handleSort={handleSort}/>
-      <PaginatedItems items={currentPokeList} isShowStats={isShowStats} />
+      <PaginatedItems items={currentPokeList} isShowStats={isShowStats} cacheMap={pokemonDataCacheMap} />
     </>
   )
 }
