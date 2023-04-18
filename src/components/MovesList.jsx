@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import Pokedex  from 'pokedex-promise-v2'
+import Pokedex from 'pokedex-promise-v2'
 import MovesListElement from './MovesListElement'
 
 function MovesList() {
@@ -12,11 +12,10 @@ function MovesList() {
             setMovesList(data.results)
         })
     }, [])
-    
 
     return (
         <div>
-            <table className='table'>
+            <table className='table' width={'100%'}>
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -25,11 +24,12 @@ function MovesList() {
                         <th>Power</th>
                         <th><span data-tooltip="Power Points" className='has-tooltip-top has-tooltip-arrow'>PP</span></th>
                         <th>Target</th>
+                        <th>Description</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {movesList.map((move, k) => 
-                      <MovesListElement name={move.name} url={move.url} key={k}/>  
+                    {movesList.map((move, k) =>
+                        <MovesListElement name={move.name} url={move.url} key={k} />
                     )}
                 </tbody>
             </table>

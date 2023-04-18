@@ -6,7 +6,6 @@ export default function Moves() {
     <div className="App">
       <section>
         <article>
-            <h1>Moves</h1>
             <MovesList/>
         </article>
       </section>
