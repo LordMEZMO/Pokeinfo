@@ -7,6 +7,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 export default function PokemonDetails() {
     let {name} = useParams();
 
+	const [abilities, setAbilities] = useState([]);
     const [types, setTypes] = useState([]);
 	const [sprite, setSprite] = useState()
 	const [isLoading, setIsLoading] = useState(false)
@@ -18,6 +19,7 @@ export default function PokemonDetails() {
 		setIsLoading(true)
 		pokedex.getPokemonByName(name).then((data) => {
 			console.log(data)
+			setAbilities(data.abilities)
 			setTypes(data.types)
 			setPokemonId(data.id)
 			setStats(data.stats)
@@ -51,6 +53,17 @@ export default function PokemonDetails() {
         else return ""
     }
 
+	const listAbilities = abilities.map((ab, k) => {
+		return (
+			<tr key={k}>
+				<td>{ab.ability.name}</td>
+				<td>
+					{ab.is_hidden ? "yes" : "no"}
+				</td>
+			</tr>
+		)
+	})
+
     return (
         <div className="App">
             <section>
@@ -65,18 +78,61 @@ export default function PokemonDetails() {
                         }
                     </div>
                     <p>Pokemon id: {pokemonId}</p>
-                    <p>Types:</p>
-					{
-                        types ? types.map((type, k) => (
-							<p key={k}>{type.type.name}</p>
-                        )) : "none"
-                    }
+
+					<p>Abilities ({abilities.length})</p>
+					<table className='table'>
+						<thead>
+							<tr>
+								<th>name</th>
+								<th>hidden</th>
+							</tr>
+						</thead>
+						<tbody>
+							{listAbilities ? listAbilities : 
+							<tr><td colSpan={2}>none</td></tr>}
+						</tbody>
+					</table>
+					
+                    <p>Types ({types.length})</p>
+					<table className='table'>
+						<thead>
+							<tr>
+								<th>type</th>
+							</tr>
+						</thead>
+						<tbody>
+							{types ? types.map((type, k) => (
+								<tr key={k}>
+									<td>{type.type.name}</td>
+								</tr>
+							)) : <tr><td>none</td></tr>
+							}
+						</tbody>
+					</table>
+
                     <p>Stats:</p>
-					{
-                        stats ? stats.map((stat) => {
-                            <p>{stat.base_stat}: {stat.stat.name}</p>
-                        }) : "none"
-                    }
+					<table className='table'>
+						<thead>
+							<tr>
+								<th>base stat</th>
+								<th>effort</th>
+								<th>name</th>
+							</tr>
+						</thead>
+						<tbody>
+						{
+							stats ? stats.map((stat, k) => {
+								return (
+									<tr key={k}>
+										<td>{stat.base_stat}</td>
+										<td>{stat.effort}</td>
+										<td>{stat.stat.name}</td>
+									</tr>
+								)
+							}) : <tr><td colSpan="3">none</td></tr>
+						}
+						</tbody>
+					</table>
                 </article>
             </section>
         </div>
