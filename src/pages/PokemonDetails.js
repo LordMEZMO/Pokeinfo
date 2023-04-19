@@ -13,6 +13,8 @@ export default function PokemonDetails() {
 	const [isLoading, setIsLoading] = useState(false)
 	const [pokemonId, setPokemonId] = useState(0)
 	const [stats, setStats] = useState([])
+	const [indices, setIndices] = useState([])
+	const [moves, setMoves] = useState([])
 
     useEffect(() => {
 		const pokedex = new Pokedex();
@@ -23,8 +25,10 @@ export default function PokemonDetails() {
 			setTypes(data.types)
 			setPokemonId(data.id)
 			setStats(data.stats)
-			if (data.sprites.front_default != null) {
-				fetch(data.sprites.front_default)
+			setIndices(data.game_indices)
+			setMoves(data.moves)
+			if (data.sprites.other.dream_world.front_default != null) {
+				fetch(data.sprites.other.dream_world.front_default)
 					.then((res) => res.blob())
 					.then((imgBlob) => {
 						let imgUrl = URL.createObjectURL(imgBlob)
@@ -68,7 +72,7 @@ export default function PokemonDetails() {
         <div className="App">
             <section>
                 <article>
-                    <h1>Here's all about {capitalize(name)}:</h1>
+					<h4 className='title is-4'>Here's all about {capitalize(name)}:</h4>
                     <div className="card-image is-flex is-justify-content-center is-align-items-center">
                         {!isLoading ? 
                             <figure className="image">
@@ -77,40 +81,9 @@ export default function PokemonDetails() {
                             <LoadingSpinner/>
                         }
                     </div>
-                    <p>Pokemon id: {pokemonId}</p>
-
-					<p>Abilities ({abilities.length})</p>
-					<table className='table'>
-						<thead>
-							<tr>
-								<th>name</th>
-								<th>hidden</th>
-							</tr>
-						</thead>
-						<tbody>
-							{listAbilities ? listAbilities : 
-							<tr><td colSpan={2}>none</td></tr>}
-						</tbody>
-					</table>
+                    <h5 className='tag subtitle is-5'>Pokemon ID: {pokemonId}</h5>
 					
-                    <p>Types ({types.length})</p>
-					<table className='table'>
-						<thead>
-							<tr>
-								<th>type</th>
-							</tr>
-						</thead>
-						<tbody>
-							{types ? types.map((type, k) => (
-								<tr key={k}>
-									<td>{type.type.name}</td>
-								</tr>
-							)) : <tr><td>none</td></tr>
-							}
-						</tbody>
-					</table>
-
-                    <p>Stats:</p>
+					<h5 className='subtitle is-5'>Stats ({stats.length})</h5>
 					<table className='table'>
 						<thead>
 							<tr>
@@ -133,6 +106,72 @@ export default function PokemonDetails() {
 						}
 						</tbody>
 					</table>
+
+					<h5 className='moves'>Moves ({moves.length})</h5>
+					<div className='is-flex is-flex-wrap-wrap  is-align-content-space-evenly is-justify-content-space-evenly'>
+					{
+							moves ? moves.map((move, k) => {
+								return (
+									<div key={k} className='card-image is-flex is-justify-content-center'>
+										<a href={move.move.url}>{move.move.name}</a>
+									</div>
+								)
+							}) : <div>none</div>
+						}
+					</div>
+
+					<h5 className='subtitle is-5'>Abilities ({abilities.length})</h5>
+					<table className='table'>
+						<thead>
+							<tr>
+								<th>name</th>
+								<th>hidden</th>
+							</tr>
+						</thead>
+						<tbody>
+							{listAbilities ? listAbilities : 
+							<tr><td colSpan={2}>none</td></tr>}
+						</tbody>
+					</table>
+					
+                    <h5 className='subtitle is-5'>Types ({types.length})</h5>
+					<table className='table'>
+						<thead>
+							<tr>
+								<th>type</th>
+							</tr>
+						</thead>
+						<tbody>
+							{types ? types.map((type, k) => (
+								<tr key={k}>
+									<td>{type.type.name}</td>
+								</tr>
+							)) : <tr><td>none</td></tr>
+							}
+						</tbody>
+					</table>
+
+					<h5 className='subtitle is-5'>Game indices ({indices.length})</h5>
+						<table className='table'>
+							<thead>
+								<tr>
+									<th>index</th>
+									<th>name</th>
+								</tr>
+							</thead>
+							<tbody>
+							{
+								indices ? indices.map((index, k) => {
+									return (
+										<tr key={k}>
+											<td>{index.game_index}</td>
+											<td>{index.version.name}</td>
+										</tr>
+									)
+								}) : <tr><td colspan="2">none</td></tr>
+							}
+							</tbody>
+						</table>
                 </article>
             </section>
         </div>
