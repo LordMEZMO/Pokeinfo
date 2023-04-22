@@ -4,7 +4,7 @@ function SortOptions({ handleSort }) {
     return (
         <>
             <label className='label' htmlFor='sortSelect'>Sort: </label>
-            <div className="select is-normal" id='sortSelect' style={{ width: "500px" }}>
+            <div className="select is-normal" id='sortSelect' >
                 <select onChange={handleSort}>
                     <optgroup label="Default">
                         <option value="id">Id</option>

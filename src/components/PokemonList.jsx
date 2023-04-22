@@ -6,7 +6,7 @@ import SearchOptions from './SearchOptions';
 import SortOptions from './SortOptions';
 import { useQuery, useQueryClient } from 'react-query';
 
-function Items({ currentItems, isShowStats, updatePokemonList }) {
+function Items({ currentItems, isShowStats }) {
 	return (
 		<div
 			className='is-flex is-flex-wrap-wrap  is-align-content-space-evenly is-justify-content-space-evenly'
@@ -17,14 +17,13 @@ function Items({ currentItems, isShowStats, updatePokemonList }) {
 					link={p.url}
 					isShowStats={isShowStats}
 					key={k}
-					updatePokemonList={updatePokemonList}
 				/>
 			))}
 		</div>
 	);
 }
 
-function PaginatedItems({ items, isShowStats, updatePokemonList }) {
+function PaginatedItems({ items, isShowStats }) {
 	// Here we use item offsets; we could also use page offsets
 	// following the API or data you're working with.
 	const [itemOffset, setItemOffset] = useState(0);
@@ -54,7 +53,6 @@ function PaginatedItems({ items, isShowStats, updatePokemonList }) {
 			<Items
 				currentItems={currentItems}
 				isShowStats={isShowStats}
-				updatePokemonList={updatePokemonList}
 			/>
 			<div className='pagination'>
 				<ReactPaginate
@@ -89,7 +87,6 @@ function PaginatedItems({ items, isShowStats, updatePokemonList }) {
 
 const getPokemonsList = () => {
 	const pokedex = new Pokedex()
-	console.log("refetch");
 	return pokedex.getPokemonsList().then(data => data.results)
 }
 
@@ -111,9 +108,9 @@ export default function PokemonList() {
 	const handleSearchByName = (e) => {
 		let text = e.target.value.toLowerCase().trim();
 		if (text == null || text === '') {
-			setCurrentPokeList(pokeList.data);
+			setCurrentPokeList(pokeList);
 		} else {
-			setCurrentPokeList(pokeList.data.filter((pokemon) => pokemon.name.includes(text)));
+			setCurrentPokeList(pokeList.filter((pokemon) => pokemon.name.includes(text)));
 		}
 	};
 
@@ -161,7 +158,6 @@ export default function PokemonList() {
 			<PaginatedItems
 				items={currentPokeList}
 				isShowStats={isShowStats}
-				updatePokemonList={updatePokeList}
 			/>
 		</>
 	);
