@@ -5,7 +5,7 @@ import LoadingSpinner from './LoadingSpinner';
 import { Link } from 'react-router-dom';
 import { getPokemonData } from '../Helpers';
 
-function PokemonCard({ name, link, isShowStats }) {
+function PokemonCard({ name, link, isShowStats, updatePokemonList }) {
 	const capitalize = (text) => {
 		if (text.length > 0)
 			return text.at(0).toUpperCase() + text.slice(1)
@@ -27,6 +27,7 @@ function PokemonCard({ name, link, isShowStats }) {
 			setStats(data.stats)
 			setSprite(data.imgURL)
 			setIsLoading(false)
+			updatePokemonList(data)
 		}, (error) => console.error(error))
 	}, [link, name])
 
