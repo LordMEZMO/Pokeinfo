@@ -3,6 +3,7 @@ import '../App.css';
 import { useParams } from 'react-router-dom';
 import Pokedex from 'pokedex-promise-v2';
 import LoadingSpinner from '../components/LoadingSpinner';
+// import useFollow from '../hooks/useFollow';
 
 export default function PokemonDetails() {
     let {name} = useParams();
@@ -15,6 +16,7 @@ export default function PokemonDetails() {
 	const [stats, setStats] = useState([])
 	const [indices, setIndices] = useState([])
 	const [moves, setMoves] = useState([])
+	// const [following, setFollowing] = useFollow(name);
 
     useEffect(() => {
 		const pokedex = new Pokedex();
@@ -82,6 +84,14 @@ export default function PokemonDetails() {
                         }
                     </div>
                     <h5 className='tag subtitle is-5'>Pokemon ID: {pokemonId}</h5>
+					<div className='buttons'>
+						<button 
+							className='subtitle button is-6'
+							
+						>
+							Add to favourites
+						</button>
+					</div>
 					
 					<h5 className='subtitle is-5'>Stats ({stats.length})</h5>
 					<table className='table'>
