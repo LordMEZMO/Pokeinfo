@@ -28,7 +28,7 @@ export const getPokemonSprite = (pokemonName) => {
 	});
 };
 
-const getPokemonData = (pokemonName) => {
+export const getPokemonData = (pokemonName) => {
 	const pokedex = new Pokedex()
 	return pokedex.getPokemonByName(pokemonName)
 }
@@ -39,40 +39,20 @@ const getPokemonSpecies = (pokemonName) => {
 }
 
 export const usePokemonData = (pokemonName) => {
-	return useQuery(['pokemon', `${pokemonName}`], ({ queryKey }) => getPokemonData(queryKey[1]))
+	return useQuery(['pokemon', `${pokemonName}`], () => getPokemonData(pokemonName))
 }
 
-const usePokemonSpeciesSprite = (pokemonName) => {
-	// const { data: species, isLoading: speciesIsLoading } = useQuery(['species'], () => getPokemonSpecies(pokemonName))
-	// const speciesId = species?.id
-	// let variety
-	// if(!speciesIsLoading) {
-	// 	variety = species.varieties.find((variety) => variety.is_default).pokemon.name
-	// }
-
-	// return useQuery(
-	// 	['pokemon', `${variety}`],
-	// 	({ queryKey }) => {
-	// 		console.log(variety);
-	// 		return getPokemonData(queryKey[1])
-	// 	},
-	// 	{ enabled: !!speciesId }
-	// )
-}
-
-export const useSprite = (pokemonName) => {
-	const [sprite, setSprite] = useState(null)
-	const { isLoading, data } = usePokemonData(pokemonName)
-	const pokemonData = data ?? { sprites: { front_default: '' } }
-	const speciesSprite = usePokemonSpeciesSprite(pokemonName)
-
-	if (!isLoading) {
-		if (pokemonData.sprites.front_default != null) {
-			return pokemonData.sprites.front_default
+export const usePokemonSprite = (pokemonName) => {
+	const pokedex = new Pokedex()
+	return useQuery(['pokemonSprite', pokemonName], async () => {
+		const data = await pokedex.getPokemonByName(pokemonName);
+		if(data.sprites.front_default != null){
+			return data.sprites.front_default;
 		} else {
-			return speciesSprite
+			const speciesData = await pokedex.getPokemonSpeciesByName(data.species.name)
+			const variety = speciesData.varieties.find((variety) => variety.is_default)
+			const varietyData = await pokedex.getPokemonByName(variety.pokemon.name)
+			return varietyData.sprites.front_default
 		}
-	}
-
-	return sprite
+	})
 }

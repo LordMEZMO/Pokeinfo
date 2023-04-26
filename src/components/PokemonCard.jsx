@@ -5,7 +5,7 @@ import LoadingSpinner from './LoadingSpinner';
 import { Link } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import Pokedex from 'pokedex-promise-v2'
-import {usePokemonData, useSprite} from '../Helpers'
+import {usePokemonData, usePokemonSprite} from '../Helpers'
 
 
 
@@ -13,6 +13,7 @@ import {usePokemonData, useSprite} from '../Helpers'
 function PokemonCard({ name, link, isShowStats }) {
 	const {isLoading, data} = usePokemonData(name)
 	const pokemonData = data ?? {types: [], id: null, stats: [], sprites: {}}
+	const {data: sprite, isLoading: isSpriteLoading} = usePokemonSprite(name)
 	
 	const capitalize = (text) => {
 		if (text.length > 0)
@@ -21,8 +22,6 @@ function PokemonCard({ name, link, isShowStats }) {
 	}
 	const format = (text) => text.replaceAll("-", " ").split(' ').map(word => capitalize(word)).join(' ')
 
-	const [sprites, setSprites] = useState({});
-	const sprite = useSprite(name)
 	const [types, setTypes] = useState([]);
 	const [pokemonId, setPokemonId] = useState(0)
 	const [stats, setStats] = useState([])
@@ -31,13 +30,12 @@ function PokemonCard({ name, link, isShowStats }) {
 		setTypes(pokemonData.types)
 		setPokemonId(pokemonData.id)
 		setStats(pokemonData.stats)
-		setSprites(pokemonData.sprites)
 	}, [isLoading, name])
 
 	return (
 		<div className='card'>
 			<div className="card-image is-flex is-justify-content-center is-align-items-center">
-				{!isLoading ?
+				{!isSpriteLoading ?
 					<figure className="image">
 						<img src={sprite} alt="" />
 					</figure> :

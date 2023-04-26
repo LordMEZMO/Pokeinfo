@@ -4,7 +4,8 @@ import Pokedex from 'pokedex-promise-v2';
 import ReactPaginate from 'react-paginate';
 import SearchOptions from './SearchOptions';
 import SortOptions from './SortOptions';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQueries, useQuery, useQueryClient } from 'react-query';
+import { getPokemonData } from '../Helpers';
 
 function Items({ currentItems, isShowStats }) {
 	return (
@@ -93,6 +94,16 @@ const getPokemonsList = () => {
 export default function PokemonList() {
 	const {isLoading, data} = useQuery({queryKey: 'pokemonList', queryFn: getPokemonsList});
 	const pokeList = data ?? []
+
+	const pokemonsData = useQueries(
+		pokeList.map(pokemon => {
+			return {
+				queryKey: ['pokemon', `${pokemon.name}`],
+				queryFn: () => getPokemonData(pokemon.name)
+			}
+		})
+	)
+
 	const [currentPokeList, setCurrentPokeList] = useState(data ?? []);
 	const [isShowStats, setIsShowStats] = useState(false);
 	const [sortCriteria, setSortCriteria] = useState(null);
@@ -100,10 +111,6 @@ export default function PokemonList() {
 	useEffect(()=> {
 		setCurrentPokeList(pokeList)
 	}, [isLoading])
-
-	const updatePokeList = (newValue) => {
-		pokeList[pokeList.map((pokemon) => pokemon.name).indexOf(newValue.name)] = newValue;
-	};
 
 	const handleSearchByName = (e) => {
 		let text = e.target.value.toLowerCase().trim();
@@ -119,7 +126,7 @@ export default function PokemonList() {
 		switch (sortCriteria) {
 			case 'id':
 				setCurrentPokeList(
-				  pokeList.sort(async (a,b) => {
+				  pokemonsData.sort(async (a,b) => {
 						return a.id - b.id;
 				  }))
 				break;
