@@ -5,10 +5,14 @@ const isFavourite = key => {
     if(loadJSON(key)) return true;
     return false;
 }
+const isPokemonData = key => {
+    if(key.match(/^pokemon:\w+$/)) return true;
+    return false;
+}
 
 export {
-    loadJSON,
     saveJSON,
     deleteJSON,
-    isFavourite
+    isFavourite,
+    isPokemonData
 };
