@@ -1,4 +1,4 @@
-import { useState, useEffect, useReducer } from 'react';
+import { useState, useEffect, useReducer, useCallback } from 'react';
 import '../App.css';
 import { useParams } from 'react-router-dom';
 import Pokedex from 'pokedex-promise-v2';
@@ -16,25 +16,25 @@ export default function PokemonDetails() {
 	const [stats, setStats] = useState([])
 	const [indices, setIndices] = useState([])
 	const [moves, setMoves] = useState([])
-	const [favourite, setFavourite] = useState(
-		isFavourite(`pokemon:${name}`)
-	);
+	const [favourite, setFavourite] = useState(false);
 
-	const toggleFavourite = key => {
+	useEffect(() => {
+		setFavourite(isFavourite(`pokemon:${pokemonId}`))
+	}, [])
+
+	const toggleFavourite = useCallback(() => {
+		const key = `pokemon:${pokemonId}`;
 		if(isFavourite(key)){
 			deleteJSON(key);
-			setFavourite(true);
-			return;
 		}
 		else {
 			saveJSON(key, {
 				pokemonId,
-				name,
-				sprite
+				name
 			});
-			setFavourite(true);
 		}
-	}
+		setFavourite(state => !state);
+	}, [favourite])
 
     useEffect(() => {
 		const pokedex = new Pokedex();
@@ -105,7 +105,7 @@ export default function PokemonDetails() {
 					<div className='buttons'>
 						<button 
 							className='subtitle button is-6'
-							onClick={() => toggleFavourite(`pokemon:${name}`)}
+							onClick={toggleFavourite}
 						>
 							{!favourite ? "Add to favourites" : "Unfavourite"}
 						</button>
