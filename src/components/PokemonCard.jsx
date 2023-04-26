@@ -5,21 +5,16 @@ import LoadingSpinner from './LoadingSpinner';
 import { Link } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import Pokedex from 'pokedex-promise-v2'
+import {usePokemonData, usePokemonSprite} from '../Helpers'
 
-const useSprite = (pokemonName) => {
-	useEffect(()=>{
 
-	}, [pokemonName])
-}
 
-const getPokemonData = (pokemonName) => {
-	const pokedex = new Pokedex()
-	return pokedex.getPokemonByName(pokemonName)
-}
 
-function PokemonCard({ name, link, isShowStats, updatePokemonList }) {
-	const {isLoading, data} = useQuery(['pokemon', `${name}`], ({queryKey}) => getPokemonData(queryKey[1]))
+function PokemonCard({ name, link, isShowStats }) {
+	const {isLoading, data} = usePokemonData(name)
 	const pokemonData = data ?? {types: [], id: null, stats: [], sprites: {}}
+	const {data: sprite, isLoading: isSpriteLoading} = usePokemonSprite(name)
+	
 	const capitalize = (text) => {
 		if (text.length > 0)
 		return text.at(0).toUpperCase() + text.slice(1)
@@ -27,8 +22,6 @@ function PokemonCard({ name, link, isShowStats, updatePokemonList }) {
 	}
 	const format = (text) => text.replaceAll("-", " ").split(' ').map(word => capitalize(word)).join(' ')
 
-	const [sprites, setSprites] = useState({});
-	const sprite = sprites.front_default
 	const [types, setTypes] = useState([]);
 	const [pokemonId, setPokemonId] = useState(0)
 	const [stats, setStats] = useState([])
@@ -37,13 +30,12 @@ function PokemonCard({ name, link, isShowStats, updatePokemonList }) {
 		setTypes(pokemonData.types)
 		setPokemonId(pokemonData.id)
 		setStats(pokemonData.stats)
-		setSprites(pokemonData.sprites)
 	}, [isLoading, name])
 
 	return (
 		<div className='card'>
 			<div className="card-image is-flex is-justify-content-center is-align-items-center">
-				{!isLoading ?
+				{!isSpriteLoading ?
 					<figure className="image">
 						<img src={sprite} alt="" />
 					</figure> :
@@ -54,7 +46,7 @@ function PokemonCard({ name, link, isShowStats, updatePokemonList }) {
 			<div className="card-header is-flex-direction-column">
 				<span className='tag '>#{pokemonId}</span>
 				<h5 className="card-header-title rows">
-					<Link to={"pokemon/" + format(name).toLowerCase()}>{format(name)}</Link>
+					<Link to={"pokemon/" + name.toLowerCase()}>{format(name)}</Link>
 				</h5>
 			</div>
 
