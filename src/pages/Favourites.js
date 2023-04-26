@@ -7,7 +7,16 @@ export default function Favourites() {
   const [favourites, setFavourites] = useState([]);
 
   useEffect(() => {
-    if(!localStorage.length) return;
+    if(!localStorage.length) {
+      //return;
+      for (let i=0; i<20; i++){
+        localStorage.setItem(`pokemon:test${i}`, 
+        JSON.stringify({
+          "pokemonId": i,
+          "name": `pokemon${i}`
+        }))
+      }
+    }
     let temp = [];
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
