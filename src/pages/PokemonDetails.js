@@ -3,7 +3,7 @@ import '../App.css';
 import { useParams } from 'react-router-dom';
 import Pokedex from 'pokedex-promise-v2';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { loadJSON, saveJSON, deleteJSON, isFavourite } from '../utils/storageUtils';
+import {saveJSON, deleteJSON, isFavourite} from '../utils/storageUtils';
 
 export default function PokemonDetails() {
     let {name} = useParams();

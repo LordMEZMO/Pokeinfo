@@ -1,6 +1,7 @@
 import '../App.css';
 import React, {useEffect, useState} from 'react';
 import FavouriteList from './../components/FavouriteList';
+import {isPokemonData} from '../utils/storageUtils';
 
 export default function Favourites() {
   const [favourites, setFavourites] = useState([]);
@@ -10,6 +11,7 @@ export default function Favourites() {
     let temp = [];
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
+      if(!isPokemonData(key)) continue;
       temp = [...temp, JSON.parse(localStorage.getItem(key))];
     }
     setFavourites(temp);
@@ -21,7 +23,10 @@ export default function Favourites() {
         <article>
           <h1 className='title'>Favourites</h1>
           {favourites.length ? (
-            <FavouriteList data={favourites}/>
+            <>
+              <h1 className='subtitle'>Your favourite pokemons</h1>
+              <FavouriteList data={favourites}/>
+            </>
           ) : (
             <p className='subtitle'>The list is empty</p>
           )}
