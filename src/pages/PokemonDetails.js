@@ -83,10 +83,11 @@ export default function PokemonDetails() {
         <div className="App">
             <section>
                 <article>
-					<h4 className='title is-4'>Here's all about {format(name)}:</h4>
+					<h4 className='title'>{format(name)}</h4>
+					<p className='subtitle'>Here's all about {format(name)}</p>
                     <div className="card-image is-flex is-justify-content-center is-align-items-center">
                         {!isLoading ? 
-                            <figure className="image">
+                            <figure className="image is-128x128">
                                 <img src={sprite} alt=""/>
                             </figure> :
                             <LoadingSpinner/>
