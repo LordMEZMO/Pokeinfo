@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import Pokedex from 'pokedex-promise-v2'
 import {usePokemonData, usePokemonSprite} from '../Helpers'
-import { capitalize, format } from '../utils/otherUtils';
+import { format } from '../utils/otherUtils';
 
 
 function PokemonCard({ name, link, isShowStats }) {
@@ -59,7 +59,7 @@ function PokemonCard({ name, link, isShowStats }) {
 			<div className='card-footer are-small' style={{ justifySelf: 'flex-end' }}>
 				{
 					types.map((n, key) => {
-						return <PokemonType type={capitalize(n.type.name)} key={key} />
+						return <PokemonType type={n.type.name} key={key} />
 					})
 				}
 			</div>

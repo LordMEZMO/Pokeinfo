@@ -1,6 +1,7 @@
 import React from "react";
 import LoadingSpinner from "./LoadingSpinner";
 import { usePokemonSprite } from "../Helpers";
+import { format } from '../utils/otherUtils';
 
 function FavouriteCard({data}){
     const {data: sprite, isLoading: isSpriteLoading} = usePokemonSprite(data.name)
@@ -17,7 +18,7 @@ function FavouriteCard({data}){
             </div>
             <div className="card-header is-flex-direction-column">
                 <h5 className="card-header-title rows">
-                    <a href={`/pokemon/${data.name}`}>{data.name}</a>
+                    <a href={`/pokemon/${data.name}`}>{format(data.name)}</a>
                 </h5>
                 <p className="tag">#{data.pokemonId}</p>
             </div>

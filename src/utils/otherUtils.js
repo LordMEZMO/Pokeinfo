@@ -1,4 +1,4 @@
-export const capitalize = (text) => {
+const capitalize = (text) => {
     if (text.length > 0)
     return text.at(0).toUpperCase() + text.slice(1)
     else return ""
