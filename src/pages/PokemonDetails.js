@@ -132,11 +132,11 @@ export default function PokemonDetails() {
 					</table>
 
 					<h5 className='moves'>Moves ({moves.length})</h5>
-					<div className='is-flex is-flex-wrap-wrap  is-align-content-space-evenly is-justify-content-space-evenly'>
+					<div className='is-flex is-flex-wrap-wrap is-align-content-space-evenly' style={{width: 400}}>
 					{
 							moves ? moves.map((move, k) => {
 								return (
-									<div key={k} className='card-image is-flex is-justify-content-center'>
+									<div key={k} className='tag is-flex is-justify-content-center' style={{margin: 5}}>
 										<a href={move.move.url}>{move.move.name}</a>
 									</div>
 								)
