@@ -5,6 +5,7 @@ import Pokedex from 'pokedex-promise-v2';
 import LoadingSpinner from '../components/LoadingSpinner';
 import {saveJSON, deleteJSON, isFavourite} from '../utils/storageUtils';
 import {format} from '../utils/otherUtils';
+import {FaStar, FaRegStar} from 'react-icons/fa';
 
 export default function PokemonDetails() {
     let {name} = useParams();
@@ -99,7 +100,15 @@ export default function PokemonDetails() {
 							className='subtitle button is-6'
 							onClick={toggleFavourite}
 						>
-							{!favourite ? "Add to favourites" : "Unfavourite"}
+							{!favourite ? (
+								<p>
+									<FaRegStar/>Add to favourites
+								</p>
+							) : (
+								<p>
+									<FaStar/>Unfavourite
+								</p>
+							)}
 						</button>
 					</div>
 					

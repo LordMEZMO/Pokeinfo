@@ -1,6 +1,7 @@
 import React from 'react';
 import NavLink from '../components/NavLink';
 import {Outlet} from "react-router-dom";
+import {FaHome} from 'react-icons/fa';
 
 function Layout(){
     return (
