@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import Pokedex from 'pokedex-promise-v2';
 import LoadingSpinner from '../components/LoadingSpinner';
 import {saveJSON, deleteJSON, isFavourite} from '../utils/storageUtils';
+import {format} from '../utils/otherUtils';
 
 export default function PokemonDetails() {
     let {name} = useParams();
@@ -67,12 +68,6 @@ export default function PokemonDetails() {
 		})
 	}, [name, favourite])
 
-	const capitalize = (text) => {
-        if(text.length > 0)
-            return text.at(0).toUpperCase() + text.slice(1)
-        else return ""
-    }
-
 	const listAbilities = abilities.map((ab, k) => {
 		return (
 			<tr key={k}>
@@ -88,7 +83,7 @@ export default function PokemonDetails() {
         <div className="App">
             <section>
                 <article>
-					<h4 className='title is-4'>Here's all about {capitalize(name)}:</h4>
+					<h4 className='title is-4'>Here's all about {format(name)}:</h4>
                     <div className="card-image is-flex is-justify-content-center is-align-items-center">
                         {!isLoading ? 
                             <figure className="image">
@@ -131,7 +126,7 @@ export default function PokemonDetails() {
 						</tbody>
 					</table>
 
-					<h5 className='moves'>Moves ({moves.length})</h5>
+					<h5 className='subtitle is-5'>Moves ({moves.length})</h5>
 					<div className='is-flex is-flex-wrap-wrap is-align-content-space-evenly' style={{width: 400}}>
 					{
 							moves ? moves.map((move, k) => {
