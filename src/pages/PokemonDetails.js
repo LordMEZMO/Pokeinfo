@@ -16,11 +16,7 @@ export default function PokemonDetails() {
 	const [stats, setStats] = useState([])
 	const [indices, setIndices] = useState([])
 	const [moves, setMoves] = useState([])
-	const [favourite, setFavourite] = useState(false);
-
-	useEffect(() => {
-		setFavourite(isFavourite(`pokemon:${pokemonId}`))
-	}, [])
+	const [favourite, setFavourite] = useState();
 
 	const toggleFavourite = useCallback(() => {
 		const key = `pokemon:${pokemonId}`;
@@ -40,13 +36,13 @@ export default function PokemonDetails() {
 		const pokedex = new Pokedex();
 		setIsLoading(true)
 		pokedex.getPokemonByName(name).then((data) => {
-			console.log(data)
 			setAbilities(data.abilities)
 			setTypes(data.types)
 			setPokemonId(data.id)
 			setStats(data.stats)
 			setIndices(data.game_indices)
 			setMoves(data.moves)
+			setFavourite(isFavourite(`pokemon:${pokemonId}`))
 			if (data.sprites.other.dream_world.front_default != null) {
 				fetch(data.sprites.other.dream_world.front_default)
 					.then((res) => res.blob())
@@ -69,7 +65,7 @@ export default function PokemonDetails() {
 				})
 			}
 		})
-	}, [name])
+	}, [name, favourite])
 
 	const capitalize = (text) => {
         if(text.length > 0)
