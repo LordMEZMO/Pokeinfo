@@ -14,7 +14,7 @@ function PokemonCard({ name, link, isShowStats }) {
 	const {isLoading, data} = usePokemonData(name)
 	const pokemonData = data ?? {types: [], id: null, stats: [], sprites: {}}
 	const {data: sprite, isLoading: isSpriteLoading} = usePokemonSprite(name)
-	
+
 	const capitalize = (text) => {
 		if (text.length > 0)
 		return text.at(0).toUpperCase() + text.slice(1)
@@ -53,8 +53,8 @@ function PokemonCard({ name, link, isShowStats }) {
 			{isShowStats ?
 				<div className='card-content p-2'>
 					<div className="content has-background-light is-size-7 px-2 py-1">
-						{stats.map((x) =>
-							<div className='is-flex is-justify-content-space-between is-align-content-center is-flex-wrap-wrap'>
+						{stats.map((x, k) =>
+							<div className='is-flex is-justify-content-space-between is-align-content-center is-flex-wrap-wrap' key={k}>
 								<p>{x.stat.name.toUpperCase()}</p>
 								<p>{x.base_stat}</p>
 							</div>

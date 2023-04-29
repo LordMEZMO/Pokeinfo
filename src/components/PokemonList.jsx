@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useReducer } from 'react';
 import PokemonCard from './PokemonCard';
-import Pokedex from 'pokedex-promise-v2';
 import ReactPaginate from 'react-paginate';
 import SearchOptions from './SearchOptions';
 import SortOptions from './SortOptions';
-import { useQueries, useQuery, useQueryClient } from 'react-query';
+import { useQueries } from 'react-query';
 import { getPokemonData } from '../Helpers';
 
 function Items({ currentItems, isShowStats }) {
@@ -32,13 +31,13 @@ function PaginatedItems({ items, isShowStats }) {
 
 	useEffect(() => {
 		setItemOffset(0);
+		console.log(`Loading items from ${itemOffset} to ${endOffset}`);
 	}, [items]);
 
 	// Simulate fetching items from another resources.
 	// (This could be items from props; or items loaded in a local state
 	// from an API endpoint with useEffect and useState)
 	const endOffset = itemOffset + itemsPerPage;
-	console.log(`Loading items from ${itemOffset} to ${endOffset}`);
 	const currentItems = items.slice(itemOffset, endOffset);
 	const pageCount = Math.ceil(items.length / itemsPerPage);
 
@@ -86,15 +85,9 @@ function PaginatedItems({ items, isShowStats }) {
 	);
 }
 
-const getPokemonsList = () => {
-	const pokedex = new Pokedex()
-	return pokedex.getPokemonsList().then(data => data.results)
-}
 
-export default function PokemonList() {
-	const {isLoading, data} = useQuery({queryKey: 'pokemonList', queryFn: getPokemonsList});
-	const pokeList = data ?? []
 
+export default function PokemonList({pokeList}) {
 	const pokemonsData = useQueries(
 		pokeList.map(pokemon => {
 			return {
@@ -104,13 +97,17 @@ export default function PokemonList() {
 		})
 	)
 
-	const [currentPokeList, setCurrentPokeList] = useState(data ?? []);
+	const allPokemonsData = pokemonsData.filter((fetchedData) => fetchedData.isSuccess).map((fetchedData) => fetchedData.data)
+
+	const [currentPokeList, setCurrentPokeList] = useState(pokeList);
 	const [isShowStats, setIsShowStats] = useState(false);
-	const [sortCriteria, setSortCriteria] = useState(null);
+	const [sortCriteria, setSortCriteria] = useState('id');
+	const [sortOrder, changeSortOrder] = useReducer((checked) => !checked, false)
 
 	useEffect(()=> {
 		setCurrentPokeList(pokeList)
-	}, [isLoading])
+		console.log('refetch');
+	}, [pokeList])
 
 	const handleSearchByName = (e) => {
 		let text = e.target.value.toLowerCase().trim();
@@ -126,7 +123,7 @@ export default function PokemonList() {
 		switch (sortCriteria) {
 			case 'id':
 				setCurrentPokeList(
-				  pokemonsData.sort(async (a,b) => {
+				  allPokemonsData.sort((a,b) => {
 						return a.id - b.id;
 				  }))
 				break;
@@ -147,7 +144,11 @@ export default function PokemonList() {
 			case 'height':
 				break;
 		}
-	}, [sortCriteria]);
+
+		if(sortOrder) {
+			setCurrentPokeList(currentPokeList.reverse())
+		}
+	}, [sortCriteria, sortOrder]);
 
 	const handleSort = (e) => {
 		let sortBy = e.target.options[e.target.selectedIndex].value;
@@ -161,7 +162,7 @@ export default function PokemonList() {
 	return (
 		<>
 			<SearchOptions handleSearchByName={handleSearchByName} handleShowStats={handleShowStats} />
-			<SortOptions handleSort={handleSort} />
+			<SortOptions handleSort={handleSort} handleSortOrder={changeSortOrder} sortOrderValue={sortOrder}/>
 			<PaginatedItems
 				items={currentPokeList}
 				isShowStats={isShowStats}

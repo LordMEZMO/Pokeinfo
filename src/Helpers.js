@@ -1,7 +1,10 @@
 import Pokedex from 'pokedex-promise-v2';
-import React from 'react';
-import { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
+
+export const getPokemonsList = () => {
+	const pokedex = new Pokedex()
+	return pokedex.getPokemonsList().then(data => data.results)
+}
 
 export const getPokemonSprite = (pokemonName) => {
 	const pokedex = new Pokedex();
