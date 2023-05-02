@@ -31,10 +31,12 @@ export const getPokemonSprite = (pokemonName) => {
 	});
 };
 
-export const getPokemonData = (pokemonName) => {
+export const getPokemonData = async (pokemonName) => {
 	const pokedex = new Pokedex()
-	return pokedex.getPokemonByName(pokemonName)
+	return await pokedex.getPokemonByName(pokemonName)
 }
+
+
 
 const getPokemonSpecies = (pokemonName) => {
 	const pokedex = new Pokedex()
@@ -58,4 +60,33 @@ export const usePokemonSprite = (pokemonName) => {
 			return varietyData.sprites.front_default
 		}
 	})
+}
+
+export const getMoveByName = async (moveName) => {
+	const pokedex = new Pokedex()
+	return await pokedex.getMoveByName(moveName === "pound" ? "1" : moveName)
+}
+
+export const getMovesList =  () => {
+	const pokedex = new Pokedex()
+	return pokedex.getMovesList().then(data => data.results)
+}
+
+export const convertMoveData = (moveData) => {
+	const effectChance = moveData.effect_chance
+	const moveDesc = moveData.effect_entries
+	const replaceEffectChance = (desc) => {return desc.replace("$effect_chance", effectChance)}
+
+	return {
+		id: moveData.id,
+		name: moveData.name,
+		type: moveData.type.name,
+		accuracy: moveData.accuracy,
+		desc: moveDesc.map((desc) => replaceEffectChance(desc.short_effect)),
+		target: moveData.target.name
+	}
+}
+
+export const convertAllMovesData = (movesList) => {
+	return [...movesList].map((move) => convertMoveData(move))
 }

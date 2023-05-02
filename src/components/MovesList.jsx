@@ -1,97 +1,91 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
-import Pokedex from 'pokedex-promise-v2'
-import MovesListElement from './MovesListElement'
-import {useTable} from 'react-table'
+import React from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import MovesListElement from './MovesListElement';
+import { useTable } from 'react-table';
+import { convertAllMovesData, convertMoveData } from '../Helpers';
 
-function MovesList() {
-    const [movesList, setMovesList] = useState([])
-    const data = React.useMemo(
-        () => [
-          {
-            col1: 'Hello',
-            col2: 'World',
-          },
-          {
-            col1: 'react-table',
-            col2: 'rocks',
-          },
-          {
-            col1: 'whatever',
-            col2: 'you want',
-          },
-        ],
-        []
-      )
+function MovesList({ allMovesData }) {
+	const data = React.useMemo(() => convertAllMovesData(allMovesData), [allMovesData]);
 
-      const columns = React.useMemo(
-        () => [
-          {
-            Header: 'Column 1',
-            accessor: 'col1', // accessor is the "key" in the data
-          },
-          {
-            Header: 'Column 2',
-            accessor: 'col2',
-          },
-        ],
-        []
-      )
+	const columns = React.useMemo(
+		() => [
+			{
+				Header: 'ID',
+				accessor: 'id' // accessor is the "key" in the data
+			},
+			{
+				Header: 'Name',
+				accessor: 'name' // accessor is the "key" in the data
+			},
+			{
+				Header: 'Type',
+				accessor: 'type' // accessor is the "key" in the data
+			},
+			{
+				Header: 'Accuracy',
+				accessor: 'accuracy'
+			},
+			{
+				Header: 'Target',
+				accessor: 'target'
+			},
+			{
+				Header: 'Description',
+				accessor: 'desc'
+			}
+		],
+		[]
+	);
 
-      const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        rows,
-        prepareRow,
-      } = useTable({ columns, data })
+	const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
+		columns,
+		data
+	});
 
-      return (
-        <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
-          <thead>
-            {headerGroups.map(headerGroup => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map(column => (
-                  <th
-                    {...column.getHeaderProps()}
-                    style={{
-                      borderBottom: 'solid 3px red',
-                      background: 'aliceblue',
-                      color: 'black',
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    {column.render('Header')}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map(row => {
-              prepareRow(row)
-              return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map(cell => {
-                    return (
-                      <td
-                        {...cell.getCellProps()}
-                        style={{
-                          padding: '10px',
-                          border: 'solid 1px gray',
-                          background: 'papayawhip',
-                        }}
-                      >
-                        {cell.render('Cell')}
-                      </td>
-                    )
-                  })}
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-      )
+	return (
+		<table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
+			<thead>
+				{headerGroups.map((headerGroup) => (
+					<tr {...headerGroup.getHeaderGroupProps()}>
+						{headerGroup.headers.map((column) => (
+							<th
+								{...column.getHeaderProps()}
+								style={{
+									borderBottom: 'solid 3px red',
+									background: 'aliceblue',
+									color: 'black',
+									fontWeight: 'bold'
+								}}>
+								{column.render('Header')}
+							</th>
+						))}
+					</tr>
+				))}
+			</thead>
+			<tbody {...getTableBodyProps()}>
+				{rows.map((row) => {
+					prepareRow(row);
+					return (
+						<tr {...row.getRowProps()}>
+							{row.cells.map((cell) => {
+								return (
+									<td
+										{...cell.getCellProps()}
+										style={{
+											padding: '10px',
+											border: 'solid 1px gray',
+											background: 'papayawhip'
+										}}>
+										{cell.render('Cell')}
+									</td>
+								);
+							})}
+						</tr>
+					);
+				})}
+			</tbody>
+		</table>
+	);
 }
 
-export default MovesList
+export default React.memo(MovesList);
