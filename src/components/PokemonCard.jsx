@@ -8,11 +8,7 @@ import Pokedex from 'pokedex-promise-v2'
 import {usePokemonData, usePokemonSprite} from '../Helpers'
 
 
-
-
-function PokemonCard({ name, link, isShowStats }) {
-	const {isLoading, data} = usePokemonData(name)
-	const pokemonData = data ?? {types: [], id: null, stats: [], sprites: {}}
+function PokemonCard({ name, isShowStats, pokemonData }) {
 	const {data: sprite, isLoading: isSpriteLoading} = usePokemonSprite(name)
 
 	const capitalize = (text) => {
@@ -30,7 +26,7 @@ function PokemonCard({ name, link, isShowStats }) {
 		setTypes(pokemonData.types)
 		setPokemonId(pokemonData.id)
 		setStats(pokemonData.stats)
-	}, [isLoading, name])
+	}, [pokemonData, name])
 
 	return (
 		<div className='card'>
@@ -75,4 +71,8 @@ function PokemonCard({ name, link, isShowStats }) {
 	)
 }
 
-export default PokemonCard
+const areEqual = (prevProps, nextProps) => {
+	return prevProps.pokemonData === nextProps.pokemonData && prevProps.name === nextProps.name && prevProps.isShowStats === nextProps.isShowStats;
+  };
+
+export default React.memo(PokemonCard, areEqual)
