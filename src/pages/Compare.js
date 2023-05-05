@@ -24,13 +24,18 @@ function PokemonSearch() {
         const matches = response.data.results.filter((pokemon) =>
           regex.test(pokemon.name)
         );
-        setSuggestions(matches.map((pokemon) => pokemon.name));
+        setSuggestions(
+          matches.map((pokemon) => ({
+            name: pokemon.name,
+            imageUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.url.split('/')[6]}.png`,
+          }))
+        );
       })
       .catch((error) => console.log(error));
   }, [searchTerm]);
 
   const handleSuggestionClick = (suggestion) => {
-    setSearchTerm(suggestion);
+    setSearchTerm(suggestion.name);
     setSuggestions([]);
   };
 
@@ -46,13 +51,22 @@ function PokemonSearch() {
       />
       <div>
         {suggestions.map((suggestion, index) => (
-          <p
+          <div
             key={index}
             onClick={() => handleSuggestionClick(suggestion)}
-            style={{ cursor: "pointer" }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              cursor: "pointer",
+              padding: "10px",
+              border: "1px solid #ccc",
+              borderRadius: "5px",
+              margin: "5px",
+            }}
           >
-            {suggestion}
-          </p>
+            <img src={suggestion.imageUrl} alt={suggestion.name} />
+            <p style={{ marginLeft: "10px" }}>{suggestion.name}</p>
+          </div>
         ))}
       </div>
     </div>

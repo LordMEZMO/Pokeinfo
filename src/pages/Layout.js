@@ -5,7 +5,7 @@ import {Outlet} from "react-router-dom";
 function Layout(){
     return (
         <>
-            <header>PokeInfo</header>
+            <header><NavLink name="Pokeinfo" link="/"/></header>
             <nav>
                 <ul>
                     <NavLink name="Pokemon List" link="/"/>
