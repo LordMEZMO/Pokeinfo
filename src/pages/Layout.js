@@ -12,6 +12,7 @@ function Layout(){
                     <NavLink name="Favourites" link="/favourites"/>
                     <NavLink name="Moves" link="/moves"/>
                     <NavLink name="Abilities" link="/abilities"/>
+                    <NavLink name="items" link="/items"/>
                     <NavLink name="Compare" link="/compare"/>
                     <NavLink name="News" link="/news"/>
                     <NavLink name="Register" link="/register"/>
