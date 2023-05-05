@@ -7,6 +7,10 @@ function PokemonSearch() {
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
 
+  const handleChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
   useEffect(() => {
     if (searchTerm.length === 0) {
       setSuggestions([]);
@@ -25,34 +29,34 @@ function PokemonSearch() {
       .catch((error) => console.log(error));
   }, [searchTerm]);
 
-  const handleChange = (event) => {
-    setSearchTerm(event.target.value);
+  const handleSuggestionClick = (suggestion) => {
+    setSearchTerm(suggestion);
+    setSuggestions([]);
   };
 
   return (
     <div>
-      
-    </div>
-  );
-}
-
-
-
-export default function Compare() {
-  return (
-    <div id="all">
-        <div id="p1">
-        <label htmlFor="search">Wyszukaj pokemona:</label>
-      <input type="text" id="search" name="search" value={searchTerm} onChange={handleChange} />
+      <label htmlFor="search">Wyszukaj pokemona:</label>
+      <input
+        type="text"
+        id="search"
+        name="search"
+        value={searchTerm}
+        onChange={handleChange}
+      />
       <div>
         {suggestions.map((suggestion, index) => (
-          <p key={index}>{suggestion}</p>
+          <p
+            key={index}
+            onClick={() => handleSuggestionClick(suggestion)}
+            style={{ cursor: "pointer" }}
+          >
+            {suggestion}
+          </p>
         ))}
       </div>
-        </div>
-        <div id="p2">
-          <p>select second pokemon</p>
-        </div>
     </div>
   );
 }
+
+export default PokemonSearch;
