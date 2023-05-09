@@ -1,91 +1,117 @@
 import React from 'react';
-import { useState, useEffect, useMemo } from 'react';
-import MovesListElement from './MovesListElement';
-import { useTable } from 'react-table';
-import { convertAllMovesData, convertMoveData } from '../Helpers';
+import { useTable, useFlexLayout, useSortBy } from 'react-table';
+import { FixedSizeList } from 'react-window'
+import styled from 'styled-components'
 
-function MovesList({ allMovesData }) {
-	const data = React.useMemo(() => convertAllMovesData(allMovesData), [allMovesData]);
+const Styles = styled.div`
+	display: block;
+  padding: 1rem;
 
-	const columns = React.useMemo(
-		() => [
-			{
-				Header: 'ID',
-				accessor: 'id' // accessor is the "key" in the data
-			},
-			{
-				Header: 'Name',
-				accessor: 'name' // accessor is the "key" in the data
-			},
-			{
-				Header: 'Type',
-				accessor: 'type' // accessor is the "key" in the data
-			},
-			{
-				Header: 'Accuracy',
-				accessor: 'accuracy'
-			},
-			{
-				Header: 'Target',
-				accessor: 'target'
-			},
-			{
-				Header: 'Description',
-				accessor: 'desc'
-			}
-		],
-		[]
-	);
+  .table {
+		width: 100%;
+    border-spacing: 0;
+    border: 1px solid black;
+    .tr {
+      :last-child {
+        .td {
+          border-bottom: 0;
+        }
+      }
+    }
+    .th,
+    .td {
+      margin: 0;
+      padding: 0.5rem;
+      border-bottom: 1px solid black;
+      border-right: 1px solid black;
+      :last-child {
+        border-right: 1px solid black;
+      }
+    }
+  }
 
-	const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
+	.span{
+		text-align: right;
+	}
+`
+
+function MovesList({ columns, data }) {
+	return (
+	<Styles>
+		<Table columns={columns} data={data}/>
+	</Styles>
+	)
+}
+
+function Table({ columns, data }) {
+	const {
+		getTableProps,
+		getTableBodyProps,
+		headerGroups,
+		rows,
+		prepareRow
+	} = useTable({
 		columns,
-		data
-	});
+		data,
+	}, useFlexLayout, useSortBy);
+
+  const RenderRow = React.useCallback(
+    ({ index, style }) => {
+      const row = rows[index]
+      prepareRow(row)
+      return (
+        <div
+          {...row.getRowProps({
+            style,
+          })}
+          className='tr'
+        >
+          {row.cells.map(cell => {
+            return (
+              <div {...cell.getCellProps()} className='td'>
+                {cell.render('Cell')}
+              </div>
+            )
+          })}
+        </div>
+      )
+    },
+    [prepareRow, rows]
+  )
 
 	return (
-		<table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
-			<thead>
-				{headerGroups.map((headerGroup) => (
-					<tr {...headerGroup.getHeaderGroupProps()}>
-						{headerGroup.headers.map((column) => (
-							<th
-								{...column.getHeaderProps()}
-								style={{
-									borderBottom: 'solid 3px red',
-									background: 'aliceblue',
-									color: 'black',
-									fontWeight: 'bold'
-								}}>
-								{column.render('Header')}
-							</th>
-						))}
-					</tr>
-				))}
-			</thead>
-			<tbody {...getTableBodyProps()}>
-				{rows.map((row) => {
-					prepareRow(row);
-					return (
-						<tr {...row.getRowProps()}>
-							{row.cells.map((cell) => {
-								return (
-									<td
-										{...cell.getCellProps()}
-										style={{
-											padding: '10px',
-											border: 'solid 1px gray',
-											background: 'papayawhip'
-										}}>
-										{cell.render('Cell')}
-									</td>
-								);
-							})}
-						</tr>
-					);
-				})}
-			</tbody>
-		</table>
-	);
+    <div {...getTableProps()} className='table'>
+      <div>
+        {headerGroups.map(headerGroup => (
+          <div {...headerGroup.getHeaderGroupProps()} className='tr'>
+            {headerGroup.headers.map(column => (
+              <div {...column.getHeaderProps(column.getSortByToggleProps())} className='th'>
+                {column.render('Header')}
+								<span className='sort'>
+                    {column.isSorted
+                      ? column.isSortedDesc
+                        ? ' 🔽'
+                        : ' 🔼'
+                      : ''}
+                  </span>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+
+      <div {...getTableBodyProps()}>
+        <FixedSizeList
+          height={500}
+          itemCount={rows.length}
+          itemSize={80}
+          width={'100%'}
+        >
+          {RenderRow}
+        </FixedSizeList>
+      </div>
+    </div>
+  )
 }
 
 export default React.memo(MovesList);

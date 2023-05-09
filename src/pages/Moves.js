@@ -1,12 +1,12 @@
 import '../App.css';
 import MovesList from '../components/MovesList';
 import {useQueries, useQuery} from 'react-query'
-import {convertMoveData, getMoveByName, getMovesList} from '../Helpers'
+import {useMemo} from 'react'
+import {convertAllMovesData, getMoveByName, getMovesList} from '../Helpers'
 
 export default function Moves() {
 	const {data} = useQuery({queryKey: 'movesList', queryFn: getMovesList})
 	const movesList = data ?? []
-
 	const movesData = useQueries(
 		movesList.map((move) => {
 			return {
@@ -17,6 +17,40 @@ export default function Moves() {
 	);
 
 	const allMovesData = movesData.filter((fetchedMove) => fetchedMove.isSuccess).map((fetchedMove) => fetchedMove.data)
+	const tableData = useMemo(() => convertAllMovesData(allMovesData), [allMovesData]);
+
+	const columns = useMemo(
+		() => [
+			{
+				Header: 'ID',
+				accessor: 'id',
+				width:  50,
+				align: 'right',
+			},
+			{
+				Header: 'Name',
+				accessor: 'name'
+			},
+			{
+				Header: 'Type',
+				accessor: 'type'
+			},
+			{
+				Header: 'Accuracy',
+				accessor: 'accuracy',
+				width: 60
+			},
+			{
+				Header: 'Target',
+				accessor: 'target'
+			},
+			{
+				Header: 'Description',
+				accessor: 'desc'
+			}
+		],
+		[]
+	);
 
 	return (
 		<div className="App">
@@ -24,7 +58,7 @@ export default function Moves() {
 				<article>
 					{
 						movesData.filter(fetchedMove => fetchedMove.isSuccess).length === movesList.length ?
-						<MovesList allMovesData={allMovesData}/> :
+						<MovesList columns={columns} data={tableData}/> :
 						'loading'
 					}
 				</article>
