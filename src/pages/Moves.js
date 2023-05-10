@@ -38,7 +38,6 @@ export default function Moves() {
 			{
 				Header: 'Accuracy',
 				accessor: 'accuracy',
-				width: 60
 			},
 			{
 				Header: 'Target',
