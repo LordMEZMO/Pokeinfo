@@ -5,7 +5,7 @@ import Pokedex from 'pokedex-promise-v2';
 import LoadingSpinner from '../components/LoadingSpinner';
 import {saveJSON, deleteJSON, isFavourite} from '../utils/storageUtils';
 import {format} from '../utils/otherUtils';
-import {FaStar, FaRegStar} from 'react-icons/fa';
+import {FaHeart, FaRegHeart} from 'react-icons/fa';
 
 export default function PokemonDetails() {
     let {name} = useParams();
@@ -102,11 +102,11 @@ export default function PokemonDetails() {
 						>
 							{!favourite ? (
 								<p>
-									<FaRegStar/>Add to favourites
+									<FaRegHeart/>Add to favourites
 								</p>
 							) : (
 								<p>
-									<FaStar/>Unfavourite
+									<FaHeart/>Unfavourite
 								</p>
 							)}
 						</button>
