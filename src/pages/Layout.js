@@ -4,7 +4,7 @@ import {Outlet} from "react-router-dom";
 import {FaHome, FaHeart, FaList, FaListUl, FaSitemap, FaNewspaper, FaUserPlus, FaUserCircle} from 'react-icons/fa';
 
 function Layout(){
-    const iconSize = 42;
+    const iconSize = 32;
     return (
         <>
             <header>PokeInfo</header>
