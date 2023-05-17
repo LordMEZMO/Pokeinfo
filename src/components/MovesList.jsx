@@ -14,7 +14,6 @@ const Styles = styled.div`
   .table {
 		width: 100%;
     border-spacing: 0;
-
     }
 
     .td,th{
@@ -46,9 +45,7 @@ const Styles = styled.div`
       border: 1px solid #dbdbdb;
       border-width: 0 0 1px;
       padding: 0.2rem 0;
-    }
-  }
-`
+    }`
 
 function MovesList({ columns, data }) {
 	return (
