@@ -9,6 +9,13 @@ import {
 import { FixedSizeList } from "react-window";
 import TableFilter from "./TableFilter";
 import styled from "styled-components";
+import PokemonType from "./PokemonType";
+
+const capitalize = (text) => {
+  if (text.length > 0)
+  return text.at(0).toUpperCase() + text.slice(1)
+  else return ""
+}
 
 const Styles = styled.div`
 	display: block;
@@ -46,6 +53,7 @@ const Styles = styled.div`
 	}
 
 	.tbody .td {
+
 	}
 
 	.filters{
@@ -57,13 +65,35 @@ const Styles = styled.div`
 	.cellId{
 		text-align: center;
 		height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
 	}
 
 	.cellId span {
 		display: inline-block;
-		vertical-align: middle;
-		line-height: 50px;
 	}
+
+  .stat{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    height: 100%
+  }
+
+  .name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap; 
+    height: 100%;
+  }
+  .nameSpan::first-letter{
+    text-transform: uppercase;
+
+  }
 `;
 
 function PokemonTable({ allPokemonsData }) {
@@ -93,11 +123,63 @@ function PokemonTable({ allPokemonsData }) {
       },
       {
         Header: "Name",
-        accessor: "name",
+        accessor: "names",
+        Cell: (tableProps) => (
+          <div className="name"><span className="nameSpan">{tableProps.row.original.name}</span></div>
+        )
       },
       {
         Header: "Type",
         accessor: "type",
+        Cell: (tableProps) => (
+          <div className="is-flex is-justify-content-flex-end is-align-content-center is-flex-wrap-wrap" style={{height: '100%'}}>
+            {tableProps.row.original.types.map((n, key) => {
+              return <PokemonType type={capitalize(n.type.name)} key={key} />;
+            })}
+          </div>
+        )
+      },
+      {
+        Header: "HP",
+        accessor: "hp",
+        Cell: (tableProps) => (<div className="stat">
+          {tableProps.row.original.stats.filter((statEntry) => statEntry.stat.name === 'hp')[0].base_stat}
+        </div>)
+      },
+      {
+        Header: "Attack",
+        accessor: "attack",
+        Cell: (tableProps) => (<div className="stat">
+          {tableProps.row.original.stats.filter((statEntry) => statEntry.stat.name === 'attack')[0].base_stat}
+        </div>)
+      },
+      {
+        Header: "Defense",
+        accessor: "defense",
+        Cell: (tableProps) => (<div className="stat">
+          {tableProps.row.original.stats.filter((statEntry) => statEntry.stat.name === 'defense')[0].base_stat}
+        </div>)
+      },
+      {
+        Header: "Special Attack",
+        accessor: "special-attack",
+        Cell: (tableProps) => (<div className="stat">
+          {tableProps.row.original.stats.filter((statEntry) => statEntry.stat.name === 'hp')[0].base_stat}
+        </div>)
+      },
+      {
+        Header: "Special Defense",
+        accessor: "special-defense",
+        Cell: (tableProps) => (<div className="stat">
+          {tableProps.row.original.stats.filter((statEntry) => statEntry.stat.name === 'defense')[0].base_stat}
+        </div>)
+      },
+      {
+        Header: "Speed",
+        accessor: "speed",
+        Cell: (tableProps) => (<div className="stat">
+          {tableProps.row.original.stats.filter((statEntry) => statEntry.stat.name === 'speed')[0].base_stat}
+        </div>)
       },
     ],
     []
@@ -127,6 +209,15 @@ function Table({ columns, data }) {
     []
   );
 
+  const defaultColumn = React.useMemo(
+    () => ({
+      minWidth: 30,
+      width: 80,
+      maxWidth: 200,
+    }),
+    []
+  )
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -141,6 +232,7 @@ function Table({ columns, data }) {
       columns,
       data,
       filterTypes,
+      defaultColumn,
     },
     useFlexLayout,
     useGlobalFilter,
