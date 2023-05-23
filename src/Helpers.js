@@ -72,6 +72,16 @@ export const getMovesList =  () => {
 	return pokedex.getMovesList().then(data => data.results)
 }
 
+export const getAbilitiesList = () => {
+	const pokedex = new Pokedex()
+	return pokedex.getAbilitiesList().then(data => data.results)
+}
+
+export const getAbilityByName = (name) => {
+	const pokedex = new Pokedex()
+	return pokedex.getAbilityByName(name)
+}
+
 export const convertMoveData = (moveData) => {
 	const effectChance = moveData.effect_chance
 	const moveDesc = moveData.effect_entries
