@@ -22,11 +22,11 @@ export default function Abilities() {
     <div className="App">
       <section>
         <article>
-          {
-						abilitiesData.filter(fetchedAbility => fetchedAbility.isSuccess).length === abilitiesList.length ?
-						<AbilitiesList data={fetchedAbilitiesData}/> :
-						'loading'
-					}
+          	{
+				abilitiesData.filter(fetchedAbility => fetchedAbility.isSuccess).length === abilitiesList.length ?
+					<AbilitiesList data={fetchedAbilitiesData}/> :
+					'loading'
+			}	
         </article>
       </section>
     </div>
