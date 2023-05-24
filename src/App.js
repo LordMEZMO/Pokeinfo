@@ -4,6 +4,7 @@ import Layout from './pages/Layout';
 import Home from './pages/Home';
 import Favourites from './pages/Favourites';
 import Moves from './pages/Moves';
+import Items from './pages/Items';
 import Abilities from './pages/Abilities';
 import Compare from './pages/Compare';
 import News from './pages/News';
@@ -30,6 +31,7 @@ export default function App() {
             <Route path="favourites" element={<Favourites/>}/>
             <Route path="moves" element={<Moves/>}/>
             <Route path="abilities" element={<Abilities/>}/>
+            <Route path="items" element={<Items/>}/>
             <Route path="compare" element={<Compare/>}/>
             <Route path="news" element={<News/>}/>
             <Route path="register" element={<Register/>}/>

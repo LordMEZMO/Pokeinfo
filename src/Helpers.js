@@ -77,6 +77,11 @@ export const getAbilitiesList = () => {
 	return pokedex.getAbilitiesList().then(data => data.results)
 }
 
+export const getItemsList = () => {
+	const pokedex = new Pokedex()
+	return pokedex.getItemsList().then(data => data.results)
+}
+
 export const getAbilityByName = (name) => {
 	const pokedex = new Pokedex()
 	return pokedex.getAbilityByName(name)
