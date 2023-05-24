@@ -81,3 +81,7 @@
     background-color: #6F35FC;
     color: white;
 }
+
+.capitalize::first-letter{
+    text-transform: uppercase;
+}
