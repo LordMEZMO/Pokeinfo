@@ -69,8 +69,8 @@ function PokemonSearch() {
       .catch((error) => console.log(error));
   }, [searchTermRight]);
 
-  const handleSuggestionClick = (suggestion,side) => {
-    if (side==="left") {
+  const handleSuggestionClick = (suggestion, side) => {
+    if (side === "left") {
       setSearchTermLeft(suggestion.name);
       setSuggestionsLeft([]);
     } else if (side === "right") {
@@ -80,7 +80,6 @@ function PokemonSearch() {
   };
 
   const handleCompareClick = () => {
-    // Sprawdzanie, czy oba pola wyszukiwania są uzupełnione
     if (searchTermLeft && searchTermRight) {
       axios
         .get(`https://pokeapi.co/api/v2/pokemon/${searchTermLeft.toLowerCase()}`)
@@ -92,99 +91,181 @@ function PokemonSearch() {
       axios
         .get(`https://pokeapi.co/api/v2/pokemon/${searchTermRight.toLowerCase()}`)
         .then((response) => {
-setSelectedPokemonRight(response.data);
-})
-.catch((error) => console.log(error));
-}
-};
+          setSelectedPokemonRight(response.data);
+        })
+        .catch((error) => console.log(error));
+    }
+  };
 
-return (
-<div style={{ display: "flex", justifyContent: "space-between" }}>
-<div>
-<label htmlFor="searchLeft">Wyszukaj pokemona po lewej stronie:</label>
-<input
-       type="text"
-       id="searchLeft"
-       name="searchLeft"
-       value={searchTermLeft}
-       onChange={handleChangeLeft}
-     />
-<div>
-{suggestionsLeft.map((suggestion, index) => (
-<div
-key={index}
-onClick={() => handleSuggestionClick(suggestion,"left")}
-style={{
-display: "flex",
-alignItems: "center",
-cursor: "pointer",
-}}
->
-<img src={suggestion.imageUrl} alt={suggestion.name} />
-<span>{suggestion.name}</span>
-</div>
-))}
-</div>
-</div>
-<div>
-<label htmlFor="searchRight">Wyszukaj pokemona po prawej stronie:</label>
-<input
-       type="text"
-       id="searchRight"
-       name="searchRight"
-       value={searchTermRight}
-       onChange={handleChangeRight}
-     />
-<div>
-{suggestionsRight.map((suggestion, index) => (
-<div
-key={index}
-onClick={() => handleSuggestionClick(suggestion,"right")}
-style={{
-display: "flex",
-alignItems: "center",
-cursor: "pointer",
-}}
->
-<img src={suggestion.imageUrl} alt={suggestion.name} />
-<span>{suggestion.name}</span>
-</div>
-))}
-</div>
-</div>
-<div>
-<button onClick={handleCompareClick}>Porównaj</button>
-</div>
-<div>
-{selectedPokemonLeft && (
-<div>
-<h3>{selectedPokemonLeft.name}</h3>
-<img
-           src={selectedPokemonLeft.sprites.front_default}
-           alt={selectedPokemonLeft.name}
-         />
-<p>Waga: {selectedPokemonLeft.weight}</p>
-<p>Wzrost: {selectedPokemonLeft.height}</p>
-<p>Typy: {selectedPokemonLeft.types.map((type) => type.type.name).join(", ")}</p>
-</div>
-)}
-</div>
-<div>
-{selectedPokemonRight && (
-<div>
-<h3>{selectedPokemonRight.name}</h3>
-<img
-           src={selectedPokemonRight.sprites.front_default}
-           alt={selectedPokemonRight.name}
-         />
-<p>Waga: {selectedPokemonRight.weight}</p>
-<p>Wzrost: {selectedPokemonRight.height}</p>
-<p>Typy: {selectedPokemonRight.types.map((type) => type.type.name).join(", ")}</p>
-</div>
-)}
-</div>
-</div>
-);
+  const renderStatWithDifference = (statName, statLeft, statRight) => {
+    const diff = statLeft - statRight;
+    let differenceString = "";
+    if (diff < 0) {
+      differenceString = `(${diff})`;
+    } else if (diff > 0) {
+      differenceString = `(+${diff})`;
+    }
+
+    return (
+      <p>
+        {statName}: {statLeft} {differenceString}
+      </p>
+    );
+  };
+
+  return (
+    <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div>
+        <label htmlFor="searchLeft">Select first pokemon</label>
+        <input
+          type="text"
+          id="searchLeft"
+          name="searchLeft"
+          value={searchTermLeft}
+          onChange={handleChangeLeft}
+        />
+        <div>
+          {suggestionsLeft.map((suggestion, index) => (
+            <div
+              key={index}
+              onClick={() => handleSuggestionClick(suggestion, "left")}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                cursor: "pointer",
+              }}
+            >
+              <img src={suggestion.imageUrl} alt={suggestion.name} />
+              <span>{suggestion.name}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div>
+        <label htmlFor="searchRight">select second pokemon</label>
+        <input
+          type="text"
+          id="searchRight"
+          name="searchRight"
+          value={searchTermRight}
+          onChange={handleChangeRight}
+        />
+        <div>
+          {suggestionsRight.map((suggestion, index) => (
+            <div
+              key={index}
+              onClick={() => handleSuggestionClick(suggestion, "right")}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                cursor: "pointer",
+              }}
+            >
+              <img src={suggestion.imageUrl} alt={suggestion.name} />
+              <span>{suggestion.name}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div>
+        <button onClick={handleCompareClick}>Compare</button>
+      </div>
+      <div>
+        {selectedPokemonLeft && (
+          <div>
+            <h3>{selectedPokemonLeft.name}</h3>
+            <img
+              src={selectedPokemonLeft.sprites.front_default}
+              alt={selectedPokemonLeft.name}
+            />
+            {renderStatWithDifference(
+              "HP",
+              selectedPokemonLeft.stats[0].base_stat,
+              selectedPokemonRight.stats[0].base_stat
+            )}
+            {renderStatWithDifference(
+              "Atak",
+              selectedPokemonLeft.stats[1].base_stat,
+              selectedPokemonRight.stats[1].base_stat
+            )}
+            {renderStatWithDifference(
+              "Obrona",
+              selectedPokemonLeft.stats[2].base_stat,
+              selectedPokemonRight.stats[2].base_stat
+            )}
+            {renderStatWithDifference(
+              "Specjalny atak",
+              selectedPokemonLeft.stats[3].base_stat,
+              selectedPokemonRight.stats[3].base_stat
+            )}
+            {renderStatWithDifference(
+              "Specjalna obrona",
+              selectedPokemonLeft.stats[4].base_stat,
+              selectedPokemonRight.stats[4].base_stat
+            )}
+            {renderStatWithDifference(
+              "Szybkość",
+              selectedPokemonLeft.stats[5].base_stat,
+              selectedPokemonRight.stats[5].base_stat
+            )}
+            <p>
+              Typy:{" "}
+              {selectedPokemonLeft.types
+                .map((type) => type.type.name)
+                .join(", ")}
+            </p>
+          </div>
+        )}
+      </div>
+      <div>
+        {selectedPokemonRight && (
+          <div>
+            <h3>{selectedPokemonRight.name}</h3>
+            <img
+              src={selectedPokemonRight.sprites.front_default}
+              alt={selectedPokemonRight.name}
+            />
+            {renderStatWithDifference(
+              "Hp",
+              selectedPokemonRight.stats[0].base_stat,
+              selectedPokemonLeft.stats[0].base_stat
+            )}
+            {renderStatWithDifference(
+              "Atk",
+              selectedPokemonRight.stats[1].base_stat,
+              selectedPokemonLeft.stats[1].base_stat
+            )}
+            {renderStatWithDifference(
+              "Def",
+              selectedPokemonRight.stats[2].base_stat,
+              selectedPokemonLeft.stats[2].base_stat
+            )}
+            {renderStatWithDifference(
+              "S_atk",
+              selectedPokemonRight.stats[3].base_stat,
+              selectedPokemonLeft.stats[3].base_stat
+            )}
+            {renderStatWithDifference(
+              "S_def",
+              selectedPokemonRight.stats[4].base_stat,
+              selectedPokemonLeft.stats[4].base_stat
+            )}
+            {renderStatWithDifference(
+              "Spe",
+              selectedPokemonRight.stats[5].base_stat,
+              selectedPokemonLeft.stats[5].base_stat
+            )}
+            <p>
+              Typy:{" "}
+              {selectedPokemonRight.types
+                .map((type) => type.type.name)
+                .join(", ")}
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }
 
 export default PokemonSearch;
