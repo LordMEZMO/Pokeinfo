@@ -1,40 +1,51 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
-import Pokedex from 'pokedex-promise-v2'
-import MovesListElement from './MovesListElement'
+import React from 'react';
+import Table from './Table';
+import { MovesListStyles } from './styles/MovesListStyles';
+import { useMemo } from 'react';
+import PokemonType from './PokemonType';
+import { Link } from 'react-router-dom';
 
-function MovesList() {
-    const [movesList, setMovesList] = useState([])
+function MovesList({ data }) {
+	const columns = useMemo(
+		() => [
+			{
+				Header: 'ID',
+				accessor: 'id',
+				width:  50,
+				align: 'right',
+			},
+			{
+				Header: 'Name',
+				accessor: 'name',
+				Cell: (tableProps) => (<Link to={"/../move/" + tableProps.row.original.name} relative='path' className='capitalized'>{tableProps.row.original.name}</Link>)
+			},
+			{
+				Header: 'Type',
+				accessor: 'type',
+				Cell: (tableProps) => (<PokemonType type={tableProps.row.original.type} />)
+			},
+			{
+				Header: 'Accuracy',
+				accessor: 'accuracy',
+			},
+			{
+				Header: 'Target',
+				accessor: 'target'
+			},
+			{
+				Header: 'Description',
+				accessor: 'desc'
+			}
+		],
+		[]
+	);
 
-    useEffect(() => {
-        const pokedex = new Pokedex()
-        pokedex.getMovesList().then((data) => {
-            setMovesList(data.results)
-        })
-    }, [])
-
-    return (
-        <div>
-            <table className='table' width={'100%'}>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Type</th>
-                        <th>Accuracy</th>
-                        <th>Power</th>
-                        <th><span data-tooltip="Power Points" className='has-tooltip-top has-tooltip-arrow'>PP</span></th>
-                        <th>Target</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {movesList.map((move, k) =>
-                        <MovesListElement name={move.name} url={move.url} key={k} />
-                    )}
-                </tbody>
-            </table>
-        </div>
-    )
+	return (
+	<MovesListStyles>
+		<Table columns={columns} data={data}/>
+	</MovesListStyles>
+	)
 }
 
-export default MovesList
+
+export default React.memo(MovesList);
