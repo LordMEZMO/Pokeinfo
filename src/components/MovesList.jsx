@@ -1,9 +1,9 @@
 import React from 'react';
-import styled from 'styled-components'
 import Table from './Table';
 import { MovesListStyles } from './styles/MovesListStyles';
 import { useMemo } from 'react';
 import PokemonType from './PokemonType';
+import { Link } from 'react-router-dom';
 
 function MovesList({ data }) {
 	const columns = useMemo(
@@ -17,7 +17,7 @@ function MovesList({ data }) {
 			{
 				Header: 'Name',
 				accessor: 'name',
-				Cell: (tableProps) => (<span className='capitalized'>{tableProps.row.original.name}</span>)
+				Cell: (tableProps) => (<Link to={"/../move/" + tableProps.row.original.name} relative='path' className='capitalized'>{tableProps.row.original.name}</Link>)
 			},
 			{
 				Header: 'Type',

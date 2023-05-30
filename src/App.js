@@ -13,6 +13,8 @@ import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import PokemonDetails from './pages/PokemonDetails';
 import {QueryClientProvider, QueryClient} from 'react-query'
+import MoveDetails from './pages/MoveDetails';
+import AbilityDetails from './pages/AbilityDetails';
 
 
 export default function App() {
@@ -38,6 +40,8 @@ export default function App() {
             <Route path="login" element={<Login/>}/>
             <Route path="*" element={<NotFound/>}/>
             <Route path="pokemon/:name" element={<PokemonDetails/>}/>
+            <Route path="move/:name" element={<MoveDetails/>}/>
+            <Route path="ability/:name" element={<AbilityDetails/>}/>
             <Route path="pokemon/" element={
               <Navigate replace to="pikachu"/>
             }/>

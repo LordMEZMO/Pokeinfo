@@ -4,6 +4,7 @@ import { AbilitiesListStyles } from './styles/AbilitiesListStyles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import Table from './Table';
+import { Link } from 'react-router-dom';
 
 
 function AbilitiesList({ data }) {
@@ -33,7 +34,7 @@ function AbilitiesList({ data }) {
       return <span className="centerXY">{generation}</span>
     }
 
-    const AbilityName = ({value}) => (<span className='capitalize'>{value.replace('-', ' ')}</span>)
+    const AbilityName = ({value}) => (<Link to={"/../ability/" + value} className='capitalize'>{value.replace('-', ' ')}</Link>)
 
     const columns = useMemo(() => [
         {

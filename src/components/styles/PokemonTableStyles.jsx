@@ -75,8 +75,7 @@ export const PokemonTableStyles = styled.div`
     flex-wrap: wrap; 
     height: 100%;
   }
-  .nameSpan::first-letter{
-    text-transform: uppercase;
-
+  .capitalized::first-letter{
+    text-transform: capitalize;
   }
 `;

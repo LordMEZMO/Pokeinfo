@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import PokemonType from "./PokemonType";
 import Table from "./Table";
 import { PokemonTableStyles } from "./styles/PokemonTableStyles";
+import { Link } from "react-router-dom";
 
 function PokemonTable({ allPokemonsData }) {
   const columns = useMemo(
@@ -33,7 +34,11 @@ function PokemonTable({ allPokemonsData }) {
         Header: "Name",
         accessor: "names",
         Cell: (tableProps) => (
-          <div className="name"><span className="nameSpan">{tableProps.row.original.name}</span></div>
+          <div className="name">
+            <Link to={'pokemon/' + tableProps.row.original.name} className="capitalized">
+              {tableProps.row.original.name}
+            </Link>
+          </div>
         )
       },
       {
