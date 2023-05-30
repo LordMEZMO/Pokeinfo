@@ -5,9 +5,19 @@ export const MovesListStyles = styled.div`
   padding: 1rem;
   border-collapse: collapse;
 
+  .capitalized::first-letter{
+    text-transform: capitalize;
+  }
+
   .table {
 		width: 100%;
     border-spacing: 0;
+    }
+
+    .td{
+      display: inline-flex;
+      height: 100%;
+      align-items: center;
     }
 
     .td,th{

@@ -19,45 +19,13 @@ export default function Moves() {
 	const allMovesData = movesData.filter((fetchedMove) => fetchedMove.isSuccess).map((fetchedMove) => fetchedMove.data)
 	const tableData = useMemo(() => convertAllMovesData(allMovesData), [allMovesData]);
 
-	const columns = useMemo(
-		() => [
-			{
-				Header: 'ID',
-				accessor: 'id',
-				width:  50,
-				align: 'right',
-			},
-			{
-				Header: 'Name',
-				accessor: 'name'
-			},
-			{
-				Header: 'Type',
-				accessor: 'type'
-			},
-			{
-				Header: 'Accuracy',
-				accessor: 'accuracy',
-			},
-			{
-				Header: 'Target',
-				accessor: 'target'
-			},
-			{
-				Header: 'Description',
-				accessor: 'desc'
-			}
-		],
-		[]
-	);
-
 	return (
 		<div className="App">
 			<section>
 				<article>
 					{
 						movesData.filter(fetchedMove => fetchedMove.isSuccess).length === movesList.length ?
-						<MovesList columns={columns} data={tableData}/> :
+						<MovesList data={tableData}/> :
 						'loading'
 					}
 				</article>
