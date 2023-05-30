@@ -22,7 +22,7 @@ function PokemonCard({ name, link, isShowStats }) {
 		setTypes(pokemonData.types)
 		setPokemonId(pokemonData.id)
 		setStats(pokemonData.stats)
-	}, [isLoading, name])
+	}, [pokemonData, name])
 
 	return (
 		<div className='card'>
@@ -45,8 +45,8 @@ function PokemonCard({ name, link, isShowStats }) {
 			{isShowStats ?
 				<div className='card-content p-2'>
 					<div className="content has-background-light is-size-7 px-2 py-1">
-						{stats.map((x) =>
-							<div className='is-flex is-justify-content-space-between is-align-content-center is-flex-wrap-wrap'>
+						{stats.map((x, k) =>
+							<div className='is-flex is-justify-content-space-between is-align-content-center is-flex-wrap-wrap' key={k}>
 								<p>{x.stat.name.toUpperCase()}</p>
 								<p>{x.base_stat}</p>
 							</div>
@@ -67,4 +67,8 @@ function PokemonCard({ name, link, isShowStats }) {
 	)
 }
 
-export default PokemonCard
+const areEqual = (prevProps, nextProps) => {
+	return prevProps.pokemonData === nextProps.pokemonData && prevProps.name === nextProps.name && prevProps.isShowStats === nextProps.isShowStats;
+  };
+
+export default React.memo(PokemonCard, areEqual)

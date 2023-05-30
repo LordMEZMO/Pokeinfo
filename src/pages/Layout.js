@@ -7,13 +7,14 @@ function Layout(){
     const iconSize = 32;
     return (
         <>
-            <header>PokeInfo</header>
+            <header><NavLink name="Pokeinfo" link="/"/></header>
             <nav>
                 <ul>
                     <NavLink name="Pokemon List" link="/" icon={<FaHome size={iconSize}/>}/>
                     <NavLink name="Favourites" link="/favourites" icon={<FaHeart size={iconSize}/>}/>
                     <NavLink name="Moves" link="/moves" icon={<FaList size={iconSize}/>}/>
                     <NavLink name="Abilities" link="/abilities" icon={<FaListUl size={iconSize}/>}/>
+                    <NavLink name="Items" link="/items" icon={<FaListUl size={iconSize}/>}/>
                     <NavLink name="Compare" link="/compare" icon={<FaSitemap size={iconSize}/>}/>
                     <NavLink name="News" link="/news" icon={<FaNewspaper size={iconSize}/>}/>
                     <NavLink name="Register" link="/register" icon={<FaUserPlus size={iconSize}/>}/>

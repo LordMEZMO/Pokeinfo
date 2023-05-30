@@ -1,60 +1,51 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useReducer, useCallback } from 'react';
 import PokemonCard from './PokemonCard';
-import Pokedex from 'pokedex-promise-v2';
 import ReactPaginate from 'react-paginate';
 import SearchOptions from './SearchOptions';
 import SortOptions from './SortOptions';
-import { useQueries, useQuery, useQueryClient } from 'react-query';
-import { getPokemonData } from '../Helpers';
 
 function Items({ currentItems, isShowStats }) {
 	return (
 		<div
 			className='is-flex is-flex-wrap-wrap  is-align-content-space-evenly is-justify-content-space-evenly'
 			style={{ gap: '10px' }}>
-			{currentItems.map((p, k) => (
-				<PokemonCard
-					name={p.name}
-					link={p.url}
-					isShowStats={isShowStats}
-					key={k}
-				/>
-			))}
+			{currentItems.map((p, k) => {
+				return (
+					<PokemonCard
+						name={p.name}
+						link={p.url}
+						isShowStats={isShowStats}
+						pokemonData={p}
+						key={k}
+					/>
+				);
+			})}
 		</div>
 	);
 }
 
 function PaginatedItems({ items, isShowStats }) {
-	// Here we use item offsets; we could also use page offsets
-	// following the API or data you're working with.
 	const [itemOffset, setItemOffset] = useState(0);
 	const [itemsPerPage, setItemsPerPage] = useState(100);
+	const [currentItems, setCurrentItems] = useState([]);
+	const [pageCount, setPageCount] = useState(0);
 
 	useEffect(() => {
-		setItemOffset(0);
-	}, [items]);
+		const endOffset = itemOffset + itemsPerPage;
 
-	// Simulate fetching items from another resources.
-	// (This could be items from props; or items loaded in a local state
-	// from an API endpoint with useEffect and useState)
-	const endOffset = itemOffset + itemsPerPage;
-	console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-	const currentItems = items.slice(itemOffset, endOffset);
-	const pageCount = Math.ceil(items.length / itemsPerPage);
+		setCurrentItems(items.slice(itemOffset, endOffset));
+		setPageCount(Math.ceil(items.length / itemsPerPage));
+		console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+	}, [itemOffset, itemsPerPage, items]);
 
-	// Invoke when user click to request another page.
 	const handlePageClick = (event) => {
 		const newOffset = (event.selected * itemsPerPage) % items.length;
-		console.log(`User requested page number ${event.selected}, which is offset ${newOffset}`);
 		setItemOffset(newOffset);
 	};
 
 	return (
 		<>
-			<Items
-				currentItems={currentItems}
-				isShowStats={isShowStats}
-			/>
+			<Items currentItems={currentItems} isShowStats={isShowStats} />
 			<div className='pagination'>
 				<ReactPaginate
 					breakLabel='...'
@@ -86,73 +77,46 @@ function PaginatedItems({ items, isShowStats }) {
 	);
 }
 
-const getPokemonsList = () => {
-	const pokedex = new Pokedex()
-	return pokedex.getPokemonsList().then(data => data.results)
-}
-
-export default function PokemonList() {
-	const {isLoading, data} = useQuery({queryKey: 'pokemonList', queryFn: getPokemonsList});
-	const pokeList = data ?? []
-
-	const pokemonsData = useQueries(
-		pokeList.map(pokemon => {
-			return {
-				queryKey: ['pokemon', `${pokemon.name}`],
-				queryFn: () => getPokemonData(pokemon.name)
-			}
-		})
-	)
-
-	const [currentPokeList, setCurrentPokeList] = useState(data ?? []);
+function PokemonList({ allPokemonsData }) {
 	const [isShowStats, setIsShowStats] = useState(false);
-	const [sortCriteria, setSortCriteria] = useState(null);
+	const [sortCriteria, setSortCriteria] = useState('id');
+	const [sortOrder, changeSortOrder] = useReducer((checked) => !checked, false);
+	const [searchText, setSearchText] = useState('')
 
-	useEffect(()=> {
-		setCurrentPokeList(pokeList)
-	}, [isLoading])
-
-	const handleSearchByName = (e) => {
-		let text = e.target.value.toLowerCase().trim();
-		if (text == null || text === '') {
-			setCurrentPokeList(pokeList);
-		} else {
-			setCurrentPokeList(pokeList.filter((pokemon) => pokemon.name.includes(text)));
+	const pokemonsToDisplay = useMemo(() => {
+		let filteredPokemons = [...allPokemonsData];
+		// Filter by search text
+		let text = searchText;
+		if (text != null && text !== '') {
+			filteredPokemons = filteredPokemons.filter((pokemon) => pokemon.name.includes(text));
 		}
-	};
 
-	useMemo(() => {
-		console.log(sortCriteria);
+		// Sort by sort criteria
 		switch (sortCriteria) {
 			case 'id':
-				setCurrentPokeList(
-				  pokemonsData.sort(async (a,b) => {
-						return a.id - b.id;
-				  }))
+				filteredPokemons = [...filteredPokemons].sort((a, b) => a.id - b.id);
 				break;
 			case 'name':
-				setCurrentPokeList(
-					pokeList.sort((a, b) => {
-						if (a.name < b.name) return -1;
-						if (a.name > b.name) return 1;
-						return 0;
-					})
-				);
+				filteredPokemons = [...filteredPokemons].sort((a, b) => a.name.localeCompare(b.name));
 				break;
-			case 'category':
-				setCurrentPokeList(pokeList);
-				break;
-			case 'weight':
-				break;
-			case 'height':
+			default:
 				break;
 		}
-	}, [sortCriteria]);
 
-	const handleSort = (e) => {
+		// Reverse if sort order is true
+		if (sortOrder) {
+			filteredPokemons = [...filteredPokemons].reverse();
+		}
+
+		return filteredPokemons;
+	}, [allPokemonsData, sortCriteria, sortOrder, searchText]);
+
+	const handleSearchByName = useCallback((e) => {setSearchText(e.target.value.toLowerCase().trim())}, []);
+
+	const handleSort = useCallback((e) => {
 		let sortBy = e.target.options[e.target.selectedIndex].value;
 		setSortCriteria(sortBy);
-	};
+	}, []);
 
 	const handleShowStats = (e) => {
 		setIsShowStats(e.target.checked);
@@ -161,11 +125,18 @@ export default function PokemonList() {
 	return (
 		<>
 			<SearchOptions handleSearchByName={handleSearchByName} handleShowStats={handleShowStats} />
-			<SortOptions handleSort={handleSort} />
-			<PaginatedItems
-				items={currentPokeList}
-				isShowStats={isShowStats}
+			<SortOptions
+				handleSort={handleSort}
+				handleSortOrder={changeSortOrder}
+				sortOrderValue={sortOrder}
 			/>
+			<PaginatedItems items={pokemonsToDisplay} isShowStats={isShowStats} />
 		</>
 	);
 }
+
+const areEqual = (prevProps, nextProps) => {
+	return prevProps.allPokemonsData === nextProps.allPokemonsData;
+}
+
+export default React.memo(PokemonList, areEqual)
