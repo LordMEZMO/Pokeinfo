@@ -67,6 +67,10 @@ export const getMoveByName = async (moveName) => {
 	return await pokedex.getMoveByName(moveName === "pound" ? "1" : moveName)
 }
 
+export const useMoveData = (moveName) => {
+	return useQuery(['move', moveName], () => getMoveByName(moveName))
+}
+
 export const getMovesList =  () => {
 	const pokedex = new Pokedex()
 	return pokedex.getMovesList().then(data => data.results)
