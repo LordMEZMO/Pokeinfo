@@ -6,7 +6,8 @@ import {FaHome, FaHeart, FaList, FaListUl, FaSitemap, FaNewspaper, FaUserPlus, F
 function Layout(){
     const iconSize = 32;
     return (
-        <>
+        <div className='hero'>
+            <div className='hero-head'>
             <header><NavLink name="Pokeinfo" link="/"/></header>
             <nav>
                 <ul>
@@ -21,11 +22,16 @@ function Layout(){
                     <NavLink name="Login" link="/login" icon={<FaUserCircle size={iconSize}/>}/>
                 </ul>
             </nav>
-            <Outlet />
-            <footer>
-                &copy; PokeInfo 2023
-            </footer>
-        </>
+            </div>
+            <div className='hero-body'>
+                <Outlet />
+            </div>
+            <div className='hero-foot'>                
+                <footer>
+                    &copy; PokeInfo 2023
+                </footer>
+            </div>
+        </div>
     );
 }
 
