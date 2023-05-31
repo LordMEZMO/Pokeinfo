@@ -1,64 +1,118 @@
 import React from "react";
-import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useMoveData } from "../Helpers";
 import { MoveDetailsStyles } from "../components/styles/MoveDetailsStyles";
 import PokemonType from "../components/PokemonType";
+import Table from "../components/Table";
 
 function MoveDetails() {
   let { name } = useParams();
   let { data, isLoading } = useMoveData(name);
 
+  const PokemonLink = ({ name }) => {
+    return (
+      <div className="capitalized">
+        <Link to={"../pokemon/" + name}>
+          {name}
+        </Link>
+      </div>
+    );
+  };
+
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: "Name",
+        accessor: "name",
+        Cell: (tableProps) => (
+          <PokemonLink name={tableProps.row.original.name} />
+        ),
+      },
+    ],
+    []
+  );
+
+  const GenerationTag = ({ generation }) => {
+    let gen = generation
+      .slice(0, 11)
+      .concat(generation.slice(11).toUpperCase());
+    gen = gen.replace("-", " ");
+    return (
+      <div className="tag is-info">
+        <span className="capitalized">{gen}</span>
+      </div>
+    );
+  };
+
   console.log(data);
   return !isLoading ? (
     <MoveDetailsStyles>
-      <section className="section">
+      <section className="section container">
         <div className="columns">
           <div className="column">
             <h1 className="title capitalized">
               <span>{name}</span>
-              <span className="tag">#{data.id}</span>
             </h1>
             <h2 className="subtitle">
+              <span className="tag">#{data.id}</span>
               <PokemonType type={data.type.name} />
+              <GenerationTag generation={data.generation.name} />
             </h2>
             <div className="block">
               <p className="desc">
-                {data.effect_entries[0].effect}
+                {
+                  data.effect_entries.find(
+                    (desc) => desc.language.name === "en",
+                    "undef"
+                  ).effect
+                }
               </p>
             </div>
             <div className="block">
               <h2 className="title is-4">Learned by</h2>
-              <div>
-                {data.learned_by_pokemon.map(pokemon => <p className="capitalized">{pokemon.name}</p>)}
+              <div className="box">
+                <Table
+                  columns={columns}
+                  data={data.learned_by_pokemon.map((pok) => pok)}
+                  rowHeight={50}
+                />
               </div>
             </div>
           </div>
           <div className="column">
-            <table className="table box">
-              <thead>
+            <h2 className="title is-4">Stats</h2>
+            <div className="box">
+              <table className="table">
                 <tr>
                   <th>Accuracy</th>
-                  <th>Damage class</th>
-                  <th>Effect</th>
-                  <th>Effect chance</th>
-                  <th>Power</th>
-                  <th>PP</th>
-                  <th>Target</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
                   <td>{data.accuracy}</td>
+                </tr>
+                <tr>
+                  <th>Damage class</th>
                   <td>{data.damage_class.name}</td>
-                  <td>{data.contest_type.name}</td>
+                </tr>
+                <tr>
+                  <th>Effect</th>
+                  <td>{data.contest_type ? data.contest_type.name : ""}</td>
+                </tr>
+                <tr>
+                  <th>Effect chance</th>
                   <td>{data.effect_chance}</td>
+                </tr>
+                <tr>
+                  <th>Power</th>
                   <td>{data.power}</td>
+                </tr>
+                <tr>
+                  <th>PP</th>
                   <td>{data.pp}</td>
+                </tr>
+                <tr>
+                  <th>Target</th>
                   <td>{data.target.name}</td>
                 </tr>
-              </tbody>
-            </table>
+              </table>
+            </div>
           </div>
         </div>
       </section>
