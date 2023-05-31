@@ -6,6 +6,8 @@ import { PokemonTableStyles } from "./styles/PokemonTableStyles";
 import { Link } from "react-router-dom";
 
 function PokemonTable({ allPokemonsData }) {
+  let statColumnWidth = 90;
+
   const columns = useMemo(
     () => [
       {
@@ -57,42 +59,48 @@ function PokemonTable({ allPokemonsData }) {
         accessor: "hp",
         Cell: (tableProps) => (<div className="stat">
           {tableProps.row.original.stats.filter((statEntry) => statEntry.stat.name === 'hp')[0].base_stat}
-        </div>)
+        </div>),
+        width: statColumnWidth
       },
       {
         Header: "Attack",
         accessor: "attack",
         Cell: (tableProps) => (<div className="stat">
           {tableProps.row.original.stats.filter((statEntry) => statEntry.stat.name === 'attack')[0].base_stat}
-        </div>)
+        </div>),
+        width: statColumnWidth
       },
       {
         Header: "Defense",
         accessor: "defense",
         Cell: (tableProps) => (<div className="stat">
           {tableProps.row.original.stats.filter((statEntry) => statEntry.stat.name === 'defense')[0].base_stat}
-        </div>)
+        </div>),
+        width: statColumnWidth
       },
       {
         Header: "Special Attack",
         accessor: "special-attack",
         Cell: (tableProps) => (<div className="stat">
           {tableProps.row.original.stats.filter((statEntry) => statEntry.stat.name === 'hp')[0].base_stat}
-        </div>)
+        </div>),
+        width: statColumnWidth
       },
       {
         Header: "Special Defense",
         accessor: "special-defense",
         Cell: (tableProps) => (<div className="stat">
           {tableProps.row.original.stats.filter((statEntry) => statEntry.stat.name === 'defense')[0].base_stat}
-        </div>)
+        </div>),
+        width: statColumnWidth
       },
       {
         Header: "Speed",
         accessor: "speed",
         Cell: (tableProps) => (<div className="stat">
           {tableProps.row.original.stats.filter((statEntry) => statEntry.stat.name === 'speed')[0].base_stat}
-        </div>)
+        </div>),
+        width: statColumnWidth
       },
     ],
     []

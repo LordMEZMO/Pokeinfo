@@ -22,7 +22,7 @@ export default function Moves() {
 	return (
 		<div className="App">
 			<section>
-				<article>
+				<article className='container'>
 					{
 						movesData.filter(fetchedMove => fetchedMove.isSuccess).length === movesList.length ?
 						<MovesList data={tableData}/> :

@@ -42,7 +42,7 @@ function Home() {
 
   return (
     <div className="App">
-      <section>
+      <section className='container'> 
         <div className='field has-addons is-justify-content-flex-end m-4'>
           <div className="control">
             <button className={(viewMode === 'card' ? 'is-primary' : '') + ' button'} onClick={() => {handleSwitchViewMode(0)}}>

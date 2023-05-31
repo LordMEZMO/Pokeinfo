@@ -21,7 +21,7 @@ export default function Abilities() {
   return (
     <div className="App">
       <section>
-        <article>
+        <article className='container'>
           	{
 				abilitiesData.filter(fetchedAbility => fetchedAbility.isSuccess).length === abilitiesList.length ?
 					<AbilitiesList data={fetchedAbilitiesData}/> :

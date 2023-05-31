@@ -65,7 +65,7 @@ export const PokemonTableStyles = styled.div`
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    height: 100%
+    height: 100%;
   }
 
   .name {

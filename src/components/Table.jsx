@@ -30,7 +30,7 @@ function Table({ columns, data, rowHeight=80 }) {
       } = useTable({
           columns,
           data,
-      filterTypes
+          filterTypes
       }, useFlexLayout, useGlobalFilter, useSortBy);
   
     const RenderRow = React.useCallback(
