@@ -91,6 +91,10 @@ export const getAbilityByName = (name) => {
 	return pokedex.getAbilityByName(name)
 }
 
+export const useAbilityData = (abilityName) => {
+	return useQuery(['ability', abilityName], () => getAbilityByName(abilityName))
+}
+
 export const convertMoveData = (moveData) => {
 	const effectChance = moveData.effect_chance
 	const moveDesc = moveData.effect_entries

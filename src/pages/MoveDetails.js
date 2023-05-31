@@ -4,6 +4,7 @@ import { useMoveData } from "../Helpers";
 import { MoveDetailsStyles } from "../components/styles/MoveDetailsStyles";
 import PokemonType from "../components/PokemonType";
 import Table from "../components/Table";
+import { GenerationTag } from "../components/GenerationTag";
 
 function MoveDetails() {
   let { name } = useParams();
@@ -31,18 +32,6 @@ function MoveDetails() {
     ],
     []
   );
-
-  const GenerationTag = ({ generation }) => {
-    let gen = generation
-      .slice(0, 11)
-      .concat(generation.slice(11).toUpperCase());
-    gen = gen.replace("-", " ");
-    return (
-      <div className="tag is-info">
-        <span className="capitalized">{gen}</span>
-      </div>
-    );
-  };
 
   console.log(data);
   return !isLoading ? (
