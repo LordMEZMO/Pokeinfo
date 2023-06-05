@@ -15,6 +15,7 @@ function MovesList() {
 
     return (
         <div>
+            <center><b><h1>Moves</h1></b></center>
             <table className='table' width={'100%'}>
                 <thead>
                     <tr>

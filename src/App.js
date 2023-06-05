@@ -6,6 +6,7 @@ import Favourites from './pages/Favourites';
 import Moves from './pages/Moves';
 import Abilities from './pages/Abilities';
 import Compare from './pages/Compare';
+import Items from './pages/items';
 import News from './pages/News';
 import Register from './pages/Register';
 import Login from './pages/Login';
@@ -31,6 +32,7 @@ export default function App() {
             <Route path="moves" element={<Moves/>}/>
             <Route path="abilities" element={<Abilities/>}/>
             <Route path="compare" element={<Compare/>}/>
+            <Route path="items" element={<Items/>}/>
             <Route path="news" element={<News/>}/>
             <Route path="register" element={<Register/>}/>
             <Route path="login" element={<Login/>}/>
