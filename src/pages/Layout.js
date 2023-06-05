@@ -1,0 +1,30 @@
+import React from 'react';
+import NavLink from '../components/NavLink';
+import {Outlet} from "react-router-dom";
+
+function Layout(){
+    return (
+        <>
+            <header><NavLink name="Pokeinfo" link="/"/></header>
+            <nav>
+                <ul>
+                    <NavLink name="Pokemon List" link="/"/>
+                    <NavLink name="Favourites" link="/favourites"/>
+                    <NavLink name="Moves" link="/moves"/>
+                    <NavLink name="Abilities" link="/abilities"/>
+                    <NavLink name="items" link="/items"/>
+                    <NavLink name="Compare" link="/compare"/>
+                    <NavLink name="News" link="/news"/>
+                    <NavLink name="Register" link="/register"/>
+                    <NavLink name="Login" link="/login"/>
+                </ul>
+            </nav>
+            <Outlet />
+            <footer>
+                &copy; PokeInfo 2023
+            </footer>
+        </>
+    );
+}
+
+export default Layout;
