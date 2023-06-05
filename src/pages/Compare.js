@@ -97,26 +97,10 @@ function PokemonSearch() {
     }
   };
 
-  const renderStatWithDifference = (statName, statLeft, statRight) => {
-    const diff = statLeft - statRight;
-    let differenceString = "";
-    if (diff < 0) {
-      differenceString = `(${diff})`;
-    } else if (diff > 0) {
-      differenceString = `(+${diff})`;
-    }
-
-    return (
-      <p>
-        {statName}: {statLeft} {differenceString}
-      </p>
-    );
-  };
-
   return (
     <div style={{ display: "flex", justifyContent: "space-between" }}>
       <div>
-        <label htmlFor="searchLeft">Select first pokemon</label>
+        <label htmlFor="searchLeft">select the first pokemon</label>
         <input
           type="text"
           id="searchLeft"
@@ -142,7 +126,7 @@ function PokemonSearch() {
         </div>
       </div>
       <div>
-        <label htmlFor="searchRight">select second pokemon</label>
+        <label htmlFor="searchRight">select the second pokemon</label>
         <input
           type="text"
           id="searchRight"
@@ -178,41 +162,143 @@ function PokemonSearch() {
               src={selectedPokemonLeft.sprites.front_default}
               alt={selectedPokemonLeft.name}
             />
-            {renderStatWithDifference(
-              "HP",
-              selectedPokemonLeft.stats[0].base_stat,
-              selectedPokemonRight.stats[0].base_stat
-            )}
-            {renderStatWithDifference(
-              "Atak",
-              selectedPokemonLeft.stats[1].base_stat,
-              selectedPokemonRight.stats[1].base_stat
-            )}
-            {renderStatWithDifference(
-              "Obrona",
-              selectedPokemonLeft.stats[2].base_stat,
-              selectedPokemonRight.stats[2].base_stat
-            )}
-            {renderStatWithDifference(
-              "Specjalny atak",
-              selectedPokemonLeft.stats[3].base_stat,
-              selectedPokemonRight.stats[3].base_stat
-            )}
-            {renderStatWithDifference(
-              "Specjalna obrona",
-              selectedPokemonLeft.stats[4].base_stat,
-              selectedPokemonRight.stats[4].base_stat
-            )}
-            {renderStatWithDifference(
-              "Szybkość",
-              selectedPokemonLeft.stats[5].base_stat,
-              selectedPokemonRight.stats[5].base_stat
-            )}
             <p>
-              Typy:{" "}
-              {selectedPokemonLeft.types
-                .map((type) => type.type.name)
-                .join(", ")}
+              HP: {selectedPokemonLeft.stats[0].base_stat}
+              {selectedPokemonRight && (
+                <>
+                  {selectedPokemonLeft.stats[0].base_stat -
+                    selectedPokemonRight.stats[0].base_stat !== 0 && (
+                    <span
+                      style={{
+                        color:
+                          selectedPokemonLeft.stats[0].base_stat -
+                            selectedPokemonRight.stats[0].base_stat <
+                          0
+                            ? "red"
+                            : "green",
+                      }}
+                    >
+                      ({selectedPokemonLeft.stats[0].base_stat -
+                        selectedPokemonRight.stats[0].base_stat})
+                    </span>
+                  )}
+                </>
+              )}
+            </p>
+            <p>
+              ATK: {selectedPokemonLeft.stats[1].base_stat}
+              {selectedPokemonRight && (
+                <>
+                  {selectedPokemonLeft.stats[1].base_stat -
+                    selectedPokemonRight.stats[1].base_stat !== 0 && (
+                    <span
+                      style={{
+                        color:
+                          selectedPokemonLeft.stats[1].base_stat -
+                            selectedPokemonRight.stats[1].base_stat <
+                          0
+                            ? "red"
+                            : "green",
+                      }}
+                    >
+                      ({selectedPokemonLeft.stats[1].base_stat -
+                        selectedPokemonRight.stats[1].base_stat})
+                    </span>
+                  )}
+                </>
+              )}
+            </p>
+            <p>
+              DEF: {selectedPokemonLeft.stats[2].base_stat}
+              {selectedPokemonRight && (
+                <>
+                  {selectedPokemonLeft.stats[2].base_stat -
+                    selectedPokemonRight.stats[2].base_stat !== 0 && (
+                    <span
+                      style={{
+                        color:
+                          selectedPokemonLeft.stats[2].base_stat -
+                            selectedPokemonRight.stats[2].base_stat <
+                          0
+                            ? "red"
+                            : "green",
+                      }}
+                    >
+                      ({selectedPokemonLeft.stats[2].base_stat -
+                        selectedPokemonRight.stats[2].base_stat})
+                    </span>
+                  )}
+                </>
+              )}
+            </p>
+            <p>
+              SATK: {selectedPokemonLeft.stats[3].base_stat}
+              {selectedPokemonRight && (
+                <>
+                  {selectedPokemonLeft.stats[3].base_stat -
+                    selectedPokemonRight.stats[3].base_stat !== 0 && (
+                    <span
+                      style={{
+                        color:
+                          selectedPokemonLeft.stats[3].base_stat -
+                            selectedPokemonRight.stats[3].base_stat <
+                          0
+                            ? "red"
+                            : "green",
+                      }}
+                    >
+                      ({selectedPokemonLeft.stats[3].base_stat -
+                        selectedPokemonRight.stats[3].base_stat})
+                    </span>
+                  )}
+                </>
+              )}
+            </p>
+            <p>
+              SDEF: {selectedPokemonLeft.stats[4].base_stat}
+              {selectedPokemonRight && (
+                <>
+                  {selectedPokemonLeft.stats[4].base_stat -
+                    selectedPokemonRight.stats[4].base_stat !== 0 && (
+                    <span
+                      style={{
+                        color:
+                          selectedPokemonLeft.stats[4].base_stat -
+                            selectedPokemonRight.stats[4].base_stat <
+                          0
+                            ? "red"
+                            : "green",
+                      }}
+                    >
+                      ({selectedPokemonLeft.stats[4].base_stat -
+                        selectedPokemonRight.stats[4].base_stat})
+                    </span>
+                  )}
+                </>
+              )}
+            </p>
+            <p>
+              SPE: {selectedPokemonLeft.stats[5].base_stat}
+              {selectedPokemonRight && (
+                <>
+                  {selectedPokemonLeft.stats[5].base_stat -
+                    selectedPokemonRight.stats[5].base_stat !== 0 && (
+                    <span
+                      style={{
+                        color:
+                          selectedPokemonLeft.stats[5].base_stat -
+                            selectedPokemonRight.stats[5].base_stat <
+                          0
+                            ? "red"
+                            : "green",
+                      }}
+                    >
+                      ({selectedPokemonLeft.stats[5].base_stat -
+                        selectedPokemonRight.stats[5].base_stat})
+                    </span>
+                  )}
+                </>
+              )}
             </p>
           </div>
         )}
@@ -225,41 +311,143 @@ function PokemonSearch() {
               src={selectedPokemonRight.sprites.front_default}
               alt={selectedPokemonRight.name}
             />
-            {renderStatWithDifference(
-              "Hp",
-              selectedPokemonRight.stats[0].base_stat,
-              selectedPokemonLeft.stats[0].base_stat
-            )}
-            {renderStatWithDifference(
-              "Atk",
-              selectedPokemonRight.stats[1].base_stat,
-              selectedPokemonLeft.stats[1].base_stat
-            )}
-            {renderStatWithDifference(
-              "Def",
-              selectedPokemonRight.stats[2].base_stat,
-              selectedPokemonLeft.stats[2].base_stat
-            )}
-            {renderStatWithDifference(
-              "S_atk",
-              selectedPokemonRight.stats[3].base_stat,
-              selectedPokemonLeft.stats[3].base_stat
-            )}
-            {renderStatWithDifference(
-              "S_def",
-              selectedPokemonRight.stats[4].base_stat,
-              selectedPokemonLeft.stats[4].base_stat
-            )}
-            {renderStatWithDifference(
-              "Spe",
-              selectedPokemonRight.stats[5].base_stat,
-              selectedPokemonLeft.stats[5].base_stat
-            )}
             <p>
-              Typy:{" "}
-              {selectedPokemonRight.types
-                .map((type) => type.type.name)
-                .join(", ")}
+              HP: {selectedPokemonRight.stats[0].base_stat}
+              {selectedPokemonLeft && (
+                <>
+                  {selectedPokemonRight.stats[0].base_stat -
+                    selectedPokemonLeft.stats[0].base_stat !== 0 && (
+                    <span
+                      style={{
+                        color:
+                          selectedPokemonRight.stats[0].base_stat -
+                            selectedPokemonLeft.stats[0].base_stat <
+                          0
+                            ? "red"
+                            : "green",
+                      }}
+                    >
+                      ({selectedPokemonRight.stats[0].base_stat -
+                        selectedPokemonLeft.stats[0].base_stat})
+                    </span>
+                  )}
+                </>
+              )}
+            </p>
+            <p>
+              ATK: {selectedPokemonRight.stats[1].base_stat}
+              {selectedPokemonLeft && (
+                <>
+                  {selectedPokemonRight.stats[1].base_stat -
+                    selectedPokemonLeft.stats[1].base_stat !== 0 && (
+                    <span
+                      style={{
+                        color:
+                          selectedPokemonRight.stats[1].base_stat -
+                            selectedPokemonLeft.stats[1].base_stat <
+                          0
+                            ? "red"
+                            : "green",
+                      }}
+                    >
+                      ({selectedPokemonRight.stats[1].base_stat -
+                        selectedPokemonLeft.stats[1].base_stat})
+                    </span>
+                  )}
+                </>
+              )}
+            </p>
+            <p>
+              DEF: {selectedPokemonRight.stats[2].base_stat}
+              {selectedPokemonLeft && (
+                <>
+                  {selectedPokemonRight.stats[2].base_stat -
+                    selectedPokemonLeft.stats[2].base_stat !== 0 && (
+                    <span
+                      style={{
+                        color:
+                          selectedPokemonRight.stats[2].base_stat -
+                            selectedPokemonLeft.stats[2].base_stat <
+                          0
+                            ? "red"
+                            : "green",
+                      }}
+                    >
+                      ({selectedPokemonRight.stats[2].base_stat -
+                        selectedPokemonLeft.stats[2].base_stat})
+                    </span>
+                  )}
+                </>
+              )}
+            </p>
+            <p>
+              SATK: {selectedPokemonRight.stats[3].base_stat}
+              {selectedPokemonLeft && (
+                <>
+                  {selectedPokemonRight.stats[3].base_stat -
+                    selectedPokemonLeft.stats[3].base_stat !== 0 && (
+                    <span
+                      style={{
+                        color:
+                          selectedPokemonRight.stats[3].base_stat -
+                            selectedPokemonLeft.stats[3].base_stat <
+                          0
+                            ? "red"
+                            : "green",
+                      }}
+                    >
+                      ({selectedPokemonRight.stats[3].base_stat -
+                        selectedPokemonLeft.stats[3].base_stat})
+                    </span>
+                  )}
+                </>
+              )}
+            </p>
+            <p>
+              SDEF: {selectedPokemonRight.stats[4].base_stat}
+              {selectedPokemonLeft && (
+                <>
+                  {selectedPokemonRight.stats[4].base_stat -
+                    selectedPokemonLeft.stats[4].base_stat !== 0 && (
+                    <span
+                      style={{
+                        color:
+                          selectedPokemonRight.stats[4].base_stat -
+                            selectedPokemonLeft.stats[4].base_stat <
+                          0
+                            ? "red"
+                            : "green",
+                      }}
+                    >
+                      ({selectedPokemonRight.stats[4].base_stat -
+                        selectedPokemonLeft.stats[4].base_stat})
+                    </span>
+                  )}
+                </>
+              )}
+            </p>
+            <p>
+              SPE: {selectedPokemonRight.stats[5].base_stat}
+              {selectedPokemonLeft && (
+                <>
+                  {selectedPokemonRight.stats[5].base_stat -
+                    selectedPokemonLeft.stats[5].base_stat !== 0 && (
+                    <span
+                      style={{
+                        color:
+                          selectedPokemonRight.stats[5].base_stat -
+                            selectedPokemonLeft.stats[5].base_stat <
+                          0
+                            ? "red"
+                            : "green",
+                      }}
+                    >
+                      ({selectedPokemonRight.stats[5].base_stat -
+                        selectedPokemonLeft.stats[5].base_stat})
+                    </span>
+                  )}
+                </>
+              )}
             </p>
           </div>
         )}
