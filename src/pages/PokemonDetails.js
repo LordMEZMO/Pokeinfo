@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import '../App.css';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Pokedex from 'pokedex-promise-v2';
 import LoadingSpinner from '../components/LoadingSpinner';
 
@@ -113,7 +113,7 @@ export default function PokemonDetails() {
 							moves ? moves.map((move, k) => {
 								return (
 									<div key={k} className='card-image is-flex is-justify-content-center'>
-										<a href={move.move.url}>{move.move.name}</a>
+										<Link to={'../move/' + move.move.name}>{move.move.name}</Link>
 									</div>
 								)
 							}) : <div>none</div>

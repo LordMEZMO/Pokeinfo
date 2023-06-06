@@ -24,7 +24,7 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <div className="container">
       <center><h1><b>Items</b></h1></center>
       <table>
         <thead>
