@@ -4,7 +4,7 @@ import Layout from './pages/Layout';
 import Home from './pages/Home';
 import Favourites from './pages/Favourites';
 import Moves from './pages/Moves';
-import Items from './pages/Items';
+import Items from './pages/items';
 import Abilities from './pages/Abilities';
 import Compare from './pages/Compare';
 import News from './pages/News';
