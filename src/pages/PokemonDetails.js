@@ -1,8 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useReducer, useCallback } from 'react';
 import '../App.css';
 import { Link, useParams } from 'react-router-dom';
 import Pokedex from 'pokedex-promise-v2';
 import LoadingSpinner from '../components/LoadingSpinner';
+import {saveJSON, deleteJSON, isFavourite} from '../utils/storageUtils';
+import {format} from '../utils/otherUtils';
+import {FaHeart, FaRegHeart} from 'react-icons/fa';
 
 export default function PokemonDetails() {
     let {name} = useParams();
@@ -15,18 +18,33 @@ export default function PokemonDetails() {
 	const [stats, setStats] = useState([])
 	const [indices, setIndices] = useState([])
 	const [moves, setMoves] = useState([])
+	const [favourite, setFavourite] = useState();
+
+	const toggleFavourite = useCallback(() => {
+		const key = `pokemon:${pokemonId}`;
+		if(isFavourite(key)){
+			deleteJSON(key);
+		}
+		else {
+			saveJSON(key, {
+				pokemonId,
+				name
+			});
+		}
+		setFavourite(state => !state);
+	}, [favourite])
 
     useEffect(() => {
 		const pokedex = new Pokedex();
 		setIsLoading(true)
 		pokedex.getPokemonByName(name).then((data) => {
-			console.log(data)
 			setAbilities(data.abilities)
 			setTypes(data.types)
 			setPokemonId(data.id)
 			setStats(data.stats)
 			setIndices(data.game_indices)
 			setMoves(data.moves)
+			setFavourite(isFavourite(`pokemon:${pokemonId}`))
 			if (data.sprites.other.dream_world.front_default != null) {
 				fetch(data.sprites.other.dream_world.front_default)
 					.then((res) => res.blob())
@@ -49,13 +67,7 @@ export default function PokemonDetails() {
 				})
 			}
 		})
-	}, [name])
-
-	const capitalize = (text) => {
-        if(text.length > 0)
-            return text.at(0).toUpperCase() + text.slice(1)
-        else return ""
-    }
+	}, [name, favourite])
 
 	const listAbilities = abilities.map((ab, k) => {
 		return (
@@ -72,16 +84,33 @@ export default function PokemonDetails() {
         <div className="App">
             <section>
                 <article>
-					<h4 className='title is-4'>Here's all about {capitalize(name)}:</h4>
+					<h4 className='title'>{format(name)}</h4>
+					<p className='subtitle'>Here's all about {format(name)}</p>
                     <div className="card-image is-flex is-justify-content-center is-align-items-center">
                         {!isLoading ? 
                             <figure className="image">
-                                <img src={sprite} alt=""/>
+                                <img src={sprite} alt={format(name)+' image'}/>
                             </figure> :
                             <LoadingSpinner/>
                         }
                     </div>
                     <h5 className='tag subtitle is-5'>Pokemon ID: {pokemonId}</h5>
+					<div className='buttons'>
+						<button 
+							className='subtitle button is-6'
+							onClick={toggleFavourite}
+						>
+							{!favourite ? (
+								<p>
+									<FaRegHeart/>Add to favourites
+								</p>
+							) : (
+								<p>
+									<FaHeart/>Unfavourite
+								</p>
+							)}
+						</button>
+					</div>
 					
 					<h5 className='subtitle is-5'>Stats ({stats.length})</h5>
 					<table className='table'>
@@ -107,8 +136,8 @@ export default function PokemonDetails() {
 						</tbody>
 					</table>
 
-					<h5 className='moves'>Moves ({moves.length})</h5>
-					<div className='is-flex is-flex-wrap-wrap  is-align-content-space-evenly is-justify-content-space-evenly'>
+					<h5 className='subtitle is-5'>Moves ({moves.length})</h5>
+					<div className='is-flex is-flex-wrap-wrap is-align-content-space-evenly' style={{width: 400}}>
 					{
 							moves ? moves.map((move, k) => {
 								return (
